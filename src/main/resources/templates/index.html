@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:utext="${title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Red+Rose&display=swap" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- own style -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body class="text-center"LucaNet>
+
+<div class="d-flex h-100 p-3 mx-auto flex-column">
+    <main role="main" class="container">
+        <h1 th:utext="${title}"></h1>
+        <h2 th:utext="${kudoscards.size()}+' new cards this week'"></h2>
+        <h5 th:utext="${contributors.size()}+' contributors'"></h5>
+
+        <div class="row">
+            <div th:each="card, iterstat : ${kudoscards}" class="col-sm-4">
+                <div class="shadowbox m-2">
+                    <img th:src="'/images/' + ${card.backgroundImage.id}" class="card-img-bottom" alt="Kudos Card"/>
+                    <div class="card-body">
+                        <h4 class="card-title"><p th:utext="${card.getType()}"></p></h4>
+                        <p class="card-text" th:utext="${card.getMessage()}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+
+</body>
+</html>
