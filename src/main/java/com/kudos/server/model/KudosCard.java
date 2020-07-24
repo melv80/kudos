@@ -2,12 +2,12 @@ package com.kudos.server.model;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 public class KudosCard extends KudosItem {
 
   public String writer;
-  public Instant created;
   public String message;
 
   @Enumerated(EnumType.STRING)
@@ -22,14 +22,6 @@ public class KudosCard extends KudosItem {
 
   public void setWriter(String writer) {
     this.writer = writer;
-  }
-
-  public Instant getCreated() {
-    return created;
-  }
-
-  public void setCreated(Instant created) {
-    this.created = created;
   }
 
   public String getMessage() {
@@ -54,5 +46,9 @@ public class KudosCard extends KudosItem {
 
   public void setBackgroundImage(Image backgroundImage) {
     this.backgroundImage = backgroundImage;
+  }
+
+  public long daysBetween(KudosCard other) {
+    return ChronoUnit.DAYS.between(getEdited(), other.getEdited());
   }
 }

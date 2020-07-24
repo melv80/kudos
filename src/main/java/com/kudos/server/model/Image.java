@@ -23,7 +23,7 @@ public class Image extends KudosItem {
   public KudosType type;
 
   public String getUrl() {
-    return "/images/"+id;
+    return "/images/"+getId();
   }
 
   @Override

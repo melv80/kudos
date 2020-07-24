@@ -22,21 +22,37 @@
 
 </head>
 
-<body class="text-center"LucaNet>
+<body class="text-center">
 
-<div class="d-flex h-100 p-3 mx-auto flex-column">
+<div class="">
     <main role="main" class="container">
         <h1 th:utext="${title}"></h1>
-        <h2 th:utext="${kudoscards.size()}+' new cards this week'"></h2>
+        <h2 th:utext="${kudoscards.size()}+' new cards since last week'"></h2>
         <h5 th:utext="${contributors.size()}+' contributors'"></h5>
 
-        <div class="row">
+        <div class="row mt-5">
+            <!--                loop through cards -->
             <div th:each="card, iterstat : ${kudoscards}" class="col-sm-4">
-                <div class="shadowbox m-2">
-                    <img th:src="'/images/' + ${card.backgroundImage.id}" class="card-img-bottom" alt="Kudos Card"/>
-                    <div class="card-body">
-                        <h4 class="card-title"><p th:utext="${card.getType()}"></p></h4>
-                        <p class="card-text" th:utext="${card.getMessage()}"></p>
+                <div class="container">
+                    <div class="row">
+                    <!--                insert day of week -->
+                    <div  th:if="${kudoscards.isFirstCardOfDay(iterstat.index)}">
+                        <h1><p th:utext="${kudoscards.getDayOfCard(iterstat.index)}"></p></h1>
+                    </div>
+                    </div>
+
+                    <!--                render card -->
+                    <div class="shadowbox m-2 row card">
+                        <img class="card-img" th:src="'/images/' + ${card.backgroundImage.id}" alt="Kudos Card"/>
+
+<!--                        <div class="date card-img-overlay text-left"><p th:utext="${card.formatDate()}"></p></div>-->
+                        <div class="date text-left"><p th:utext="${card.formatDate()}"></p></div>
+
+                        <div class="card-body">
+                            <h4 class="card-title text-left"><p th:utext="${card.getType()}"></p></h4>
+                            <p class="card-text" th:utext="${card.getMessage()}"></p>
+                            <h4 class="text-right"><p th:utext="${card.getWriter()}"></p></h4>
+                        </div>
                     </div>
                 </div>
             </div>

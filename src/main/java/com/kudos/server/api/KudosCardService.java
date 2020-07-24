@@ -8,6 +8,10 @@ import java.util.Set;
 
 @Service
 public interface KudosCardService {
+  /**
+   * @param weeksAgo
+   * @return a list of {@link KudosCard} sorted by date.
+   */
   List<KudosCard> getKudosCards(int weeksAgo);
 
   Set<String> getWriters(int weeksAgo);

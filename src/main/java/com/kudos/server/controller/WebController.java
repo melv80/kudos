@@ -4,6 +4,7 @@ import com.kudos.server.api.KudosCardService;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.Image;
 import com.kudos.server.model.KudosCard;
+import com.kudos.server.model.KudosCardList;
 import com.kudos.server.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -39,7 +40,7 @@ public class WebController {
 
   @GetMapping("/")
   public String index(final Model model) {
-    model.addAttribute("kudoscards", kudosCardService.getKudosCards(1));
+    model.addAttribute("kudoscards", new KudosCardList(kudosCardService.getKudosCards(1)));
     model.addAttribute("contributors", kudosCardService.getWriters(1));
     model.addAttribute("title", config.getCornerTitle());
     return "index";

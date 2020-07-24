@@ -18,3 +18,7 @@ h5 {
 .shadowbox {
     box-shadow: 10px 10px 5px grey;
 }
+
+.date {
+    color: black;
+}
