@@ -26,6 +26,11 @@
 
 <div class="">
     <main role="main" class="container">
+        <div class="row">
+            <div class="col-1">
+                <a href="/admin">Admin</a>
+            </div>
+        </div>
         <h1 th:utext="${title}"></h1>
         <h2 th:utext="${kudoscards.size()}+' new cards since last week'"></h2>
         <h5 th:utext="${contributors.size()}+' contributors'"></h5>
