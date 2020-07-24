@@ -19,7 +19,6 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class ImageScan {
@@ -51,7 +50,7 @@ public class ImageScan {
 
   public Map<String, Image> scanDirectories() {
     long start = System.currentTimeMillis();
-    logger.info("scanning base directory " + appConfig.getBasedir() + " : ...");
+    logger.info("scanning base directory " + appConfig.getBasedir().normalize() + " ...");
 
     Map<String, Image> images = new HashMap<>();
     try {

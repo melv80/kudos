@@ -12,6 +12,7 @@ public class AppConfig {
 
   private Path basedir;
   private String cornerTitle;
+  private String greeting;
 
   public Path getBasedir() {
     return basedir;
@@ -27,5 +28,13 @@ public class AppConfig {
 
   public void setCornerTitle(String cornerTitle) {
     this.cornerTitle = cornerTitle;
+  }
+
+  public String getGreeting() {
+    return greeting;
+  }
+
+  public void setGreeting(String greeting) {
+    this.greeting = greeting;
   }
 }
