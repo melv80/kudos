@@ -14,6 +14,8 @@ public class AppConfig {
   private String cornerTitle;
   private String greeting;
 
+  private String passwordHash;
+
   public Path getBasedir() {
     return basedir;
   }
@@ -28,6 +30,14 @@ public class AppConfig {
 
   public void setCornerTitle(String cornerTitle) {
     this.cornerTitle = cornerTitle;
+  }
+
+  public String getPasswordHash() {
+    return passwordHash;
+  }
+
+  public void setPasswordHash(String passwordHash) {
+    this.passwordHash = passwordHash;
   }
 
   public String getGreeting() {
