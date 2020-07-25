@@ -1,24 +1,21 @@
 package com.kudos.server.components;
 
-import com.kudos.server.api.KudosCardService;
+import com.kudos.server.services.KudosCardService;
 import com.kudos.server.model.Image;
 import com.kudos.server.model.KudosCard;
-import com.kudos.server.model.KudosItem;
 import com.kudos.server.model.KudosType;
 import com.kudos.server.model.dto.CreateCard;
-import com.kudos.server.model.dto.DisplayCard;
 import com.kudos.server.repositories.ImageRepository;
-import com.kudos.server.repositories.KudosCardRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.time.Instant;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -69,7 +66,17 @@ public class DemoKudosService implements KudosCardService {
 
   @Override
   public void importCards() {
-    logger.info("imported cards");
+    try {
+      List<KudosCard> cards = new KudosJsonImporter().importCards(new File("./demoimport/DemoImport.json").toURI().toURL());
+      List<Image> all = repository.findAll();
+      for (KudosCard card : cards) {
+        card.backgroundImage = all.get(new Random().nextInt(all.size()));
+      }
+      logger.info("imported cards: "+cards.size());
+      demoList.addAll(cards);
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("could not import demo data", e);
+    }
   }
 
   private KudosCard demoCard(int index) {

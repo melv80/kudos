@@ -21,41 +21,35 @@ import java.util.List;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private AppConfig config;
+  @Autowired
+  private AppConfig config;
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-
-				.antMatchers("/", "/index").permitAll()
-				.antMatchers("/admin").authenticated()
-				.antMatchers("/api/**").authenticated()
+				.antMatchers("/admin", "/api/**").hasRole("ADMIN")
 				.and()
 			.formLogin()
 				.loginPage("/login")
-				.permitAll()
 				.and()
 			.logout()
-				.logoutSuccessUrl("/login")
-				.permitAll();
-	}
+				.logoutSuccessUrl("/login");
+  }
 
 
+  @Bean
+  @Override
+  public InMemoryUserDetailsManager userDetailsService() {
+    List<UserDetails> userDetailsList = new ArrayList<>();
+    userDetailsList.add(User.withUsername("admin").password(config.getPasswordHash())
+        .roles("ADMIN", "USER").build());
+    return new InMemoryUserDetailsManager(userDetailsList);
+  }
 
-	@Bean
-	@Override
-	public InMemoryUserDetailsManager userDetailsService() {
-		List<UserDetails> userDetailsList = new ArrayList<>();
-		userDetailsList.add(User.withUsername("admin").password(config.getPasswordHash())
-				.roles("ADMIN", "USER").build());
-		return new InMemoryUserDetailsManager(userDetailsList);
-	}
-
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web
-				.ignoring().antMatchers("/resources/**");
-	}
+  @Override
+  public void configure(WebSecurity web) throws Exception {
+    web
+        .ignoring().antMatchers("/resources/**");
+  }
 }

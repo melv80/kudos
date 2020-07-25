@@ -44,7 +44,7 @@
         <p class="col-sm-1" th:utext="${kudoscards.size()}"></p>
         <div class="col-sm-8"></div>
         <div class="col-sm-2">
-            <form th:action="@{/api/v1/import}" method="post">
+            <form th:action="@{/admin/import}" method="post">
                 <input class="btn-link" type="submit" value="Import Cards"/>
             </form>
         </div>
@@ -74,7 +74,7 @@
                 <td class="text-left" th:text="${card.message}">message</td>
                 <td class="text-left" th:text="${card.edited}">edited</td>
                 <td>
-                    <form th:action="@{/api/v1/kudoscards/delete}" method="post">
+                    <form th:action="@{/admin/deletecard}" method="post">
                         <input type="hidden" name="id" th:value="${card.id}"/>
                         <input type="submit" value="Delete" class="btn btn-danger"/>
                     </form>

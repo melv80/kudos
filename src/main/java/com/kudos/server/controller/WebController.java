@@ -1,6 +1,6 @@
 package com.kudos.server.controller;
 
-import com.kudos.server.api.KudosCardService;
+import com.kudos.server.services.KudosCardService;
 import com.kudos.server.components.DisplayService;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.Image;
@@ -58,14 +58,6 @@ public class WebController {
   public String createCard(@Valid @ModelAttribute CreateCard createCard) {
     kudosCardService.createCard(createCard);
     return "redirect:/";
-  }
-
-  @GetMapping("/admin")
-  public String admin(final Model model) {
-    model.addAttribute("kudoscards", kudosCardService.getKudosCards(1));
-    model.addAttribute("contributors", kudosCardService.getWriters(1));
-    model.addAttribute("title", config.getCornerTitle());
-    return "admin";
   }
 
 

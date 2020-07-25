@@ -1,4 +1,4 @@
-package com.kudos.server.api;
+package com.kudos.server.services;
 
 import com.kudos.server.model.KudosType;
 

@@ -1,6 +1,6 @@
 package com.kudos.server.components;
 
-import com.kudos.server.api.KudosCardService;
+import com.kudos.server.services.KudosCardService;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.KudosCard;
 import com.kudos.server.model.dto.DisplayCard;
@@ -15,7 +15,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Component
