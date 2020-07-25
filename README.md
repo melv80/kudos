@@ -24,4 +24,18 @@ By default Kudos Corner comes with an embedded H2 database, but the database con
 ## You are invited to contribute
 If you want to contribute to the project feel free to do a pull request or just contact me.
 
+## Planned Features
+### Near Future
+- duplicate check during import from confluence and run imports on a cron schedule (@Scheduled)
+- select week you want to display data for (default last week)
+
+### Far Future
+- LDAP login / auth
+- cards are beeing dedicated to user ids not just textual mentioned in the card
+- a like system for cards
+- reputation high score for people beeing thanked
+
+ 
+
+
   
