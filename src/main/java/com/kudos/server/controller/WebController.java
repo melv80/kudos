@@ -4,6 +4,8 @@ import com.kudos.server.api.KudosCardService;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.Image;
 import com.kudos.server.model.KudosCardList;
+import com.kudos.server.model.KudosType;
+import com.kudos.server.model.dto.CreateCard;
 import com.kudos.server.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -11,11 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,6 +41,19 @@ public class WebController {
     model.addAttribute("title", config.getCornerTitle());
     model.addAttribute("greeting", config.getGreeting());
     return "index";
+  }
+
+  @GetMapping("/create")
+  public String createCard(final Model model) {
+    model.addAttribute("types", KudosType.values());
+    model.addAttribute("newCard", new CreateCard());
+    return "create";
+  }
+
+  @PostMapping("/create")
+  public String createCard(@Valid @ModelAttribute CreateCard createCard) {
+    kudosCardService.createCard(createCard);
+    return "redirect:/";
   }
 
   @GetMapping("/admin")

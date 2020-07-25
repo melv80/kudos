@@ -1,16 +1,31 @@
 package com.kudos.server.model;
 
-import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 
 public enum KudosType {
-  AWESOME("awesome"),
-  THANK_YOU("thankyou"),
-  APPRECIATION("appreciation");
+  AWESOME("awesome", "Awesome!"),
+  THANK_YOU("thankyou", "Thank you!"),
+  APPRECIATION("appreciation", "I appreciate");
 
   private final String folder;
+  private String formattedText;
 
-  KudosType(String folder) {
+  KudosType(String folder, String formattedText) {
     this.folder = folder;
+    this.formattedText = formattedText;
+  }
+
+  public static List<KudosType> typeList() {
+    return Arrays.asList(values());
+  }
+
+  public String getFolder() {
+    return folder;
+  }
+
+  public String getFormattedText() {
+    return formattedText;
   }
 
   public static KudosType getTypeFrom(String name) {

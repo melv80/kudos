@@ -5,10 +5,15 @@ import com.kudos.server.model.Image;
 import com.kudos.server.model.KudosCard;
 import com.kudos.server.model.KudosItem;
 import com.kudos.server.model.KudosType;
+import com.kudos.server.model.dto.CreateCard;
 import com.kudos.server.repositories.ImageRepository;
+import com.kudos.server.repositories.KudosCardRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
@@ -18,23 +23,47 @@ import java.util.stream.Collectors;
 @Component
 public class DemoKudosService implements KudosCardService {
 
+  private Logger logger = LoggerFactory.getLogger(DemoKudosService.class);
+
+
   private ImageRepository repository;
+  private ImageScan imageScan;
 
+  private List<KudosCard> demoList = new ArrayList<>();
 
-  private List<KudosCard> demoList;
-
-  public DemoKudosService(@Autowired ImageRepository imageRepository) {
+  public DemoKudosService(@Autowired ImageRepository imageRepository,
+                          @Autowired ImageScan imageScan
+  ) {
     this.repository = imageRepository;
+    this.imageScan = imageScan;
   }
 
-  private List<KudosCard> populateList() {
-    List<KudosCard> result = new ArrayList<>();
-
-    for (int i = 0; i < 15; i++) {
-      result.add(demoCard(i));
+  @PostConstruct
+  void populateList() {
+    imageScan.insertIntoDatabase();
+    int cards = 15;
+    for (int i = 0; i < cards; i++) {
+      demoList.add(demoCard(i));
     }
 
-    return result;
+    logger.info("demo data added: "+cards);
+  }
+
+  @Override
+  public void createCard(CreateCard createCard) {
+
+    KudosCard card = new KudosCard();
+    final List<Image> all = repository.findAll();
+    card.backgroundImage = all.get(new Random().nextInt(all.size()));
+    card.setEdited(Instant.now());
+    card.message = createCard.getMessage();
+    card.type = createCard.getKudostype();
+    card.writer = createCard.getWriter();
+    card.setId(demoList.size()+1);
+
+    demoList.add(card);
+    logger.info("card created");
+
   }
 
   private KudosCard demoCard(int index) {
@@ -46,6 +75,7 @@ public class DemoKudosService implements KudosCardService {
     card.message = card.message.substring(0, new Random().nextInt(card.message.length()-250));
     card.type = KudosType.THANK_YOU;
     card.writer = "KristianJ ("+index+")";
+    card.setId(index);
     return card;
   }
 
@@ -56,8 +86,6 @@ public class DemoKudosService implements KudosCardService {
 
   @Override
   public List<KudosCard> getKudosCards(int weeksAgo) {
-    if (demoList == null)
-      demoList= populateList();
     return demoList;
   }
 }

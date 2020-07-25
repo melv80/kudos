@@ -28,7 +28,7 @@
     <main role="main" class="container">
         <div class="row">
             <div class="col-sm-12 text-left">
-                <a href="/kudos">Create card</a>
+                <a href="/create">Create card</a>
             </div>
         </div>
         <h1 th:utext="${title}"></h1>
@@ -59,7 +59,7 @@
                         <!--                        <div class="date card-img-overlay text-left"><p th:utext="${card.formatDate()}"></p></div>-->
 
                         <div class="card-body">
-                            <h4 class="card-title text-left"><p th:utext="${card.getType()}"></p></h4>
+                            <h4 class="card-title text-left"><p th:utext="${card.getType().formattedText}"></p></h4>
                             <p class="card-text" th:utext="${card.getMessage()}"></p>
                             <h4 class="text-right"><p th:utext="${card.getWriter()}"></p></h4>
                         </div>

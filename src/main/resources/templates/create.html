@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Admin access</title>
+    <title>Create a Kudos card</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <!-- font -->
@@ -28,36 +28,40 @@
 <div class="container fill ">
     <div class="row mt-5">
         <div class="col-sm-5 mx-auto">
-            <h1 class="text-center">Admin Access</h1>
-            <h5 class="text-center">Kudos Corner</h5>
+            <h1 class="text-center">Create a card</h1>
+            <h5 class="text-center">Say thank you!</h5>
         </div>
     </div>
 
-    <form th:action="@{/login}" method="post">
+    <form th:action="@{/create}" th:object="${newCard}" method="post">
+
+
         <div class="row mt-5">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                 <div class="form-group">
-                    <label for="usernameID">User</label>
-                    <input type="text" class="form-control" id="usernameID" placeholder="username" name="username">
+                    <label for="kudostype">Type of card</label>
+                    <select class="form-control" th:field="*{kudostype}" id="kudostype">
+                        <option th:each="kudostype : ${T(com.kudos.server.model.KudosType).typeList()}"
+                                th:value="${kudostype}"
+                                th:text="${kudostype.formattedText}"
+                        ></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea type="text" class="form-control" id="message" name="message" th:field="*{message}"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="passwordID">Password</label>
-                    <input type="password" class="form-control" id="passwordID" name="password">
+                    <label for="writer">this card is from</label>
+                    <input type="text" class="form-control" id="writer" placeholder="T. Stark" name="username" th:field ="*{writer}">
                 </div>
-            </div>
-        </div>
-        <div class="row text-content-default">
-            <div class="col-xl-12 text-center" th:if="${param.error}">
-                Invalid password.
-            </div>
-            <div class="col-xl-12 text-center" th:if="${param.logout}">
-                <p>Please log-in for administration</p>
             </div>
         </div>
 
         <div class="row mt-2">
             <div class="col-xl-12 text-center">
-                <input type="submit" class="btn btn-outline-dark" value="Anmelden"/>
+                <input type="submit" class="btn btn-outline-dark" value="Create"/>
             </div>
         </div>
     </form>
