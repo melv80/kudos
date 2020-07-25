@@ -1,4 +1,4 @@
-package com.kudos.server.model.imports;
+package com.kudos.server.model.dto.imports;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

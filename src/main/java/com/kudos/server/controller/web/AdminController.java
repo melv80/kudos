@@ -1,7 +1,7 @@
-package com.kudos.server.controller;
+package com.kudos.server.controller.web;
 
 import com.kudos.server.config.AppConfig;
-import com.kudos.server.services.KudosCardService;
+import com.kudos.server.components.KudosCardService;
 import com.kudos.server.repositories.KudosCardRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +36,7 @@ public class AdminController {
 
   @PostMapping("/admin/deletecard")
   public ModelAndView delete(@RequestParam(name = "id") Long id) {
-//    repositories.deleteById(id);
-    logger.info("kudos deleted: "+id);
+    kudosCardService.deleteCard(id);
     return new ModelAndView("redirect:/admin");
   }
 

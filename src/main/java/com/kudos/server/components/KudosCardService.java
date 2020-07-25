@@ -1,7 +1,7 @@
-package com.kudos.server.services;
+package com.kudos.server.components;
 
-import com.kudos.server.model.KudosCard;
-import com.kudos.server.model.dto.CreateCard;
+import com.kudos.server.model.jpa.KudosCard;
+import com.kudos.server.model.dto.ui.CreateCard;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,4 +20,6 @@ public interface KudosCardService {
   void createCard(CreateCard createCard);
 
   void importCards();
+
+  void deleteCard(Long id);
 }

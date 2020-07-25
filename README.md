@@ -30,10 +30,12 @@ If you want to contribute to the project feel free to do a pull request or just 
 - select week you want to display data for (default last week)
 
 ### Far Future
+- more efficient handling of card imports / loading cards
 - LDAP login / auth
 - cards are beeing dedicated to user ids not just textual mentioned in the card
 - a like system for cards
 - reputation high score for people beeing thanked
+
 
  
 

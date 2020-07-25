@@ -1,20 +1,38 @@
-package com.kudos.server.model;
+package com.kudos.server.model.jpa;
+
+import com.sun.istack.NotNull;
+import com.sun.istack.Nullable;
 
 import javax.persistence.*;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import javax.validation.constraints.Size;
 
 @Entity
 public class KudosCard extends KudosItem {
 
-  public String writer;
-  public String message;
+
+  // imported from external system with ID
+  @Basic(optional = true)
+  private Long importerID;
+
+  private String writer;
+
+  @Size(max = 512)
+  private String message;
 
   @Enumerated(EnumType.STRING)
-  public KudosType type;
+  private KudosType type;
 
   @ManyToOne
-  public Image backgroundImage;
+  @Nullable
+  private Image backgroundImage;
+
+  public Long getImporterID() {
+    return importerID;
+  }
+
+  public void setImporterID(Long importerID) {
+    this.importerID = importerID;
+  }
 
   public String getWriter() {
     return writer;
@@ -40,15 +58,13 @@ public class KudosCard extends KudosItem {
     this.type = type;
   }
 
+  @Nullable
   public Image getBackgroundImage() {
     return backgroundImage;
   }
 
-  public void setBackgroundImage(Image backgroundImage) {
+  public void setBackgroundImage(@NotNull Image backgroundImage) {
     this.backgroundImage = backgroundImage;
   }
 
-  public long daysBetween(KudosCard other) {
-    return ChronoUnit.DAYS.between(getEdited(), other.getEdited());
-  }
 }

@@ -1,10 +1,9 @@
 package com.kudos.server.components;
 
-import com.kudos.server.services.KudosCardService;
 import com.kudos.server.config.AppConfig;
-import com.kudos.server.model.KudosCard;
-import com.kudos.server.model.dto.DisplayCard;
-import com.kudos.server.model.dto.KudosCardDisplayList;
+import com.kudos.server.model.jpa.KudosCard;
+import com.kudos.server.model.dto.ui.DisplayCard;
+import com.kudos.server.model.dto.ui.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,19 +30,19 @@ public class DisplayService {
 
   public DisplayCard toDisplayCard(KudosCard card) {
     DisplayCard result = new DisplayCard();
-    result.edited = localDateTime(card.getEdited());
-    result.formattedDate = formatDate(card.getEdited());
-    result.imageId = card.backgroundImage.getId();
+    result.created = localDateTime(card.getCreated());
+    result.formattedDate = formatDate(card.getCreated());
+    result.imageId = card.getBackgroundImage() == null ? -1 : card.getBackgroundImage().getId();
     result.title = card.getType().getFormattedText();
     result.writer = card.getWriter();
     result.message = card.getMessage();
     return result;
   }
 
-  public KudosCardDisplayList getDisplayCards(int weeksAgo) {
+  public CardList getDisplayCards(int weeksAgo) {
     final List<KudosCard> kudosCards = kudosCardService.getKudosCards(weeksAgo);
-    kudosCards.sort(Comparator.comparing(KudosCard::getEdited));
-    return new KudosCardDisplayList(kudosCards.stream().map(this::toDisplayCard).collect(Collectors.toList()), appConfig.getLocale());
+    kudosCards.sort(Comparator.comparing(KudosCard::getCreated));
+    return new CardList(kudosCards.stream().map(this::toDisplayCard).collect(Collectors.toList()), appConfig.getLocale());
   }
 
   public ZonedDateTime localDateTime(Instant time) {

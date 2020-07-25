@@ -1,12 +1,13 @@
 package com.kudos.server.components;
 
 import com.kudos.server.config.AppConfig;
-import com.kudos.server.model.Image;
-import com.kudos.server.model.KudosType;
+import com.kudos.server.model.jpa.Image;
+import com.kudos.server.model.jpa.KudosType;
 import com.kudos.server.repositories.ImageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -19,18 +20,19 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
-public class ImageScan {
+public class ImageServiceImpl implements ImageService{
 
-  private Logger logger = LoggerFactory.getLogger(ImageScan.class);
+  private Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
 
 
   private final AppConfig appConfig;
   private final ImageRepository imageRepository;
 
 
-  public ImageScan(@Autowired AppConfig config, @Autowired ImageRepository imageRepository) {
+  public ImageServiceImpl(@Autowired AppConfig config, @Autowired ImageRepository imageRepository) {
     this.appConfig = config;
     this.imageRepository = imageRepository;
   }
@@ -43,14 +45,37 @@ public class ImageScan {
       toInsert.remove(currentImage.pathOnDisk);
     }
 
-    logger.info("inserting to database: "+toInsert.size());
+    if (toInsert.isEmpty()) {
+      logger.info("no *new* images found");
+    }
+    else {
+      logger.info("inserting new images into database: " + toInsert.size());
+    }
     imageRepository.saveAll(toInsert.values());
   }
 
 
+  // TODO: 25.07.2020 to slow
+  @Nullable
+  public Image pickRandomImage(KudosType type) {
+    final List<Image> all = imageRepository.findAll().stream().filter(image -> image.type == type).collect(Collectors.toList());
+    if (all.isEmpty()) {
+      if (type == KudosType.THANK_YOU)
+        return null;
+      else
+       return pickRandomImage(KudosType.THANK_YOU);
+    }
+    return all.get(new Random().nextInt(all.size()));
+  }
+
   public Map<String, Image> scanDirectories() {
     long start = System.currentTimeMillis();
-    logger.info("scanning base directory " + appConfig.getBasedir().normalize() + " ...");
+    logger.info("searching for new images in " + appConfig.getBasedir() + " ...");
+    if (!Files.isReadable(appConfig.getBasedir())) {
+      logger.error("can not read :" + appConfig.getBasedir() + " ...");
+
+      return Collections.emptyMap();
+    }
 
     Map<String, Image> images = new HashMap<>();
     try {
@@ -60,7 +85,7 @@ public class ImageScan {
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
           final Image imageFromPath = createImageFromPath(file.normalize());
           if (imageFromPath != null) {
-            logger.info("found " + imageFromPath);
+            logger.trace("discovered image: " + imageFromPath);
             images.put(imageFromPath.pathOnDisk, imageFromPath);
           }
           else
@@ -77,7 +102,7 @@ public class ImageScan {
   }
 
   public Image createImageFromPath(Path file) {
-    final Path relativePath = appConfig.getBasedir().normalize().relativize(file);
+    final Path relativePath = appConfig.getBasedir().relativize(file);
     Image image = new Image();
     image.pathOnDisk = relativePath.toString();
     try {

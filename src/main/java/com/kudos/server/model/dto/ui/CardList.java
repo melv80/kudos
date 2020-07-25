@@ -1,18 +1,18 @@
-package com.kudos.server.model.dto;
-
-import com.kudos.server.model.KudosCard;
+package com.kudos.server.model.dto.ui;
 
 import java.time.format.TextStyle;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 /**
- * An ordered list of {@link KudosCard} ready for display.
+ * DTO for displaying cards in gallery
  */
-public class KudosCardDisplayList implements Iterable<DisplayCard> {
+public class CardList implements Iterable<DisplayCard> {
   private List<DisplayCard> cards;
   private Locale locale;
 
-  public KudosCardDisplayList(List<DisplayCard> cards, Locale locale) {
+  public CardList(List<DisplayCard> cards, Locale locale) {
     this.cards = cards;
     this.locale = locale;
   }
@@ -25,13 +25,13 @@ public class KudosCardDisplayList implements Iterable<DisplayCard> {
     if (index == 0) return true;
     DisplayCard previousCard = cards.get(index-1);
     DisplayCard currentCard = cards.get(index);
-    return previousCard.edited.getDayOfWeek() != currentCard.edited.getDayOfWeek();
+    return previousCard.created.getDayOfWeek() != currentCard.created.getDayOfWeek();
   }
 
   // TODO: 25.07.2020 move to display service
   public String getDayOfCard(int index) {
     DisplayCard currentCard = cards.get(index);
-    return currentCard.edited
+    return currentCard.created
         .getDayOfWeek().getDisplayName(TextStyle.FULL, locale);
   }
 

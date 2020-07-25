@@ -1,4 +1,4 @@
-package com.kudos.server.model;
+package com.kudos.server.model.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

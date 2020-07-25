@@ -1,12 +1,14 @@
-package com.kudos.server.controller;
+package com.kudos.server.controller.web;
 
-import com.kudos.server.services.KudosCardService;
+import com.kudos.server.components.KudosCardService;
 import com.kudos.server.components.DisplayService;
 import com.kudos.server.config.AppConfig;
-import com.kudos.server.model.Image;
-import com.kudos.server.model.KudosType;
-import com.kudos.server.model.dto.CreateCard;
+import com.kudos.server.model.jpa.Image;
+import com.kudos.server.model.jpa.KudosType;
+import com.kudos.server.model.dto.ui.CreateCard;
 import com.kudos.server.repositories.ImageRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
@@ -23,6 +25,8 @@ import java.util.Optional;
 
 @Controller
 public class WebController {
+
+  private Logger logger = LoggerFactory.getLogger(WebController.class);
 
   @Autowired
   AppConfig config;
@@ -66,7 +70,11 @@ public class WebController {
 
     final Optional<Image> byId = imageRepository.findById(id);
     if (!byId.isPresent()) throw new IllegalStateException("image not found");
-    Path path = config.getBasedir().resolve(byId.get().pathOnDisk);
+    Path path = config.getBasedir().resolve(byId.get().pathOnDisk).normalize();
+    if (!Files.isReadable(path)) {
+      logger.error(String.format("image[ID=%s] missing: %s",id, path));
+      return ResponseEntity.notFound().build();
+    }
 
     ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
 

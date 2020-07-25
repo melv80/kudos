@@ -1,6 +1,6 @@
-package com.kudos.server.model.dto;
+package com.kudos.server.model.dto.ui;
 
-import com.kudos.server.model.KudosType;
+import com.kudos.server.model.jpa.KudosType;
 
 /**
  * DTO to create a card

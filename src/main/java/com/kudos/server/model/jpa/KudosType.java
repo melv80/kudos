@@ -1,4 +1,4 @@
-package com.kudos.server.model;
+package com.kudos.server.model.jpa;
 
 import java.util.Arrays;
 import java.util.List;

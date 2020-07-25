@@ -17,14 +17,22 @@ public class AppConfig {
   private String passwordHash;
   private String localeTag = "en";
   private String outro;
+  private boolean generateDemoData = false;
 
+  public boolean isGenerateDemoData() {
+    return generateDemoData;
+  }
+
+  public void setGenerateDemoData(boolean generateDemoData) {
+    this.generateDemoData = generateDemoData;
+  }
 
   public Path getBasedir() {
     return basedir;
   }
 
   public void setBasedir(String basedir) {
-    this.basedir = Paths.get(basedir).toAbsolutePath();
+    this.basedir = Paths.get(basedir).toAbsolutePath().normalize();
   }
 
   public String getCornerTitle() {

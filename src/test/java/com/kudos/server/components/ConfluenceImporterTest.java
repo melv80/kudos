@@ -1,15 +1,15 @@
 package com.kudos.server.components;
 
-import com.kudos.server.model.KudosCard;
+import com.kudos.server.model.jpa.KudosCard;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
 
-public class KudosJsonImporterTest {
+public class ConfluenceImporterTest {
 
-  KudosJsonImporter importer = new KudosJsonImporter();
+  ConfluenceImporter importer = new ConfluenceImporter();
 
   @Test
 

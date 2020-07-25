@@ -1,14 +1,9 @@
-package com.kudos.server.model;
+package com.kudos.server.model.jpa;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
 @javax.persistence.Entity
 @Table
@@ -19,19 +14,18 @@ public abstract class KudosItem {
   @Id
   @GeneratedValue()
   @Column(name = "id", unique = true)
-  private long id;
+  private Long id;
 
-  @CreationTimestamp
   private Instant created = Instant.now();
 
   @UpdateTimestamp
   private Instant edited = Instant.now();
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

@@ -3,9 +3,9 @@ package com.kudos.server.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.kudos.server.model.KudosCard;
-import com.kudos.server.model.KudosType;
-import com.kudos.server.model.imports.ConfluenceCard;
+import com.kudos.server.model.jpa.KudosCard;
+import com.kudos.server.model.jpa.KudosType;
+import com.kudos.server.model.dto.imports.ConfluenceCard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class KudosJsonImporter {
-  private final Logger logger = LoggerFactory.getLogger(KudosJsonImporter.class);
+public class ConfluenceImporter {
+  private final Logger logger = LoggerFactory.getLogger(ConfluenceImporter.class);
 
   public List<KudosCard> importCards(URL source) {
     List<KudosCard> result = new ArrayList<>();
@@ -30,7 +30,7 @@ public class KudosJsonImporter {
       for (JsonNode rowDatum : rowData) {
         ConfluenceCard card = input.readValue(rowDatum.toString(), ConfluenceCard.class);
         result.add(convert(card));
-        logger.info("read card: "+card);
+        logger.info("read card from: "+card.userName);
       }
 
 
@@ -43,6 +43,7 @@ public class KudosJsonImporter {
 
   public static KudosCard convert(ConfluenceCard card) {
     KudosCard result = new KudosCard();
+    result.setImporterID(card.id);
     result.setCreated(DateTimeFormatter.ISO_DATE_TIME.parse(card.created, Instant::from));
     result.setEdited(DateTimeFormatter.ISO_DATE_TIME.parse(card.updated, Instant::from));
 
