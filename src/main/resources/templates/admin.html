@@ -24,31 +24,38 @@
 
 <body class="text-center">
 
-    <main role="main" class="container">
-        <div class="row">
-            <div class="col-sm-1">
-                <a href="/" class="nav-link">Gallery</a>
-            </div>
-            <div class="col-sm"></div>
-            <div class="col-sm-1">
-                <form th:action="@{/logout}" method="post">
-                    <input class="nav-link" type="submit" value="Logout"/>
-                </form>
-            </div>
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-sm-1">
+            <a href="/" class="nav-link">Gallery</a>
         </div>
-        <h1 th:utext="${title}"></h1>
-        <h2>Administration</h2>
-
-        <div class="row">
-            <p class="col-sm-1 font-weight-bold">total:</p>
-            <p class="col-sm-1" th:utext="${kudoscards.size()}"></p>
+        <div class="col-sm"></div>
+        <div class="col-sm-1">
+            <form th:action="@{/logout}" method="post">
+                <input class="nav-link" type="submit" value="Logout"/>
+            </form>
         </div>
+    </div>
+    <h1 th:utext="${title}"></h1>
+    <h2>Administration</h2>
 
-        <div class="row">
-            <p class="col-sm-1 font-weight-bold">contributors:</p>
-            <p class="col-sm-1" th:utext="${contributors.size()}"></p>
+    <div class="row">
+        <p class="col-sm-1 text-left  font-weight-bold">total:</p>
+        <p class="col-sm-1" th:utext="${kudoscards.size()}"></p>
+        <div class="col-sm-8"></div>
+        <div class="col-sm-2">
+            <form th:action="@{/api/v1/import}" method="post">
+                <input class="btn-link" type="submit" value="Import Cards"/>
+            </form>
         </div>
+    </div>
 
+    <div class="row ">
+        <p class="col-sm-1 text-left font-weight-bold">contributors:</p>
+        <p class="col-sm-1" th:utext="${contributors.size()}"></p>
+    </div>
+
+    <div class="row">
         <!--result-->
         <table id="events" class="table table-striped mt-5">
             <thead>
@@ -65,19 +72,20 @@
                 <td class="text-left" th:text="${card.id}">name</td>
                 <td class="text-left" th:text="${card.writer}">name</td>
                 <td class="text-left" th:text="${card.message}">message</td>
-                <td class="text-left" th:text="${card.formatDate()}">edited</td>
+                <td class="text-left" th:text="${card.edited}">edited</td>
                 <td>
                     <form th:action="@{/api/v1/kudoscards/delete}" method="post">
-                        <input type="hidden" name="id" th:value="${card.id}" />
-                        <input type="submit" value="Delete" class="btn btn-danger" />
+                        <input type="hidden" name="id" th:value="${card.id}"/>
+                        <input type="submit" value="Delete" class="btn btn-danger"/>
                     </form>
                 </td>
             </tr>
             </tbody>
         </table>
+    </div>
 
 
-    </main>
+</main>
 
 
 </body>

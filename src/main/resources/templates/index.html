@@ -48,20 +48,20 @@
                         <!--                insert day of week -->
                         <div th:if="${kudoscards.isFirstCardOfDay(iterstat.index)}">
                             <h1><p th:utext="${kudoscards.getDayOfCard(iterstat.index)}"></p></h1>
-                            <h5><p th:utext="${card.formatDate()}"></p></h5>
+                            <h5><p th:utext="${card.formattedDate}"></p></h5>
                         </div>
                     </div>
 
                     <!--                render card -->
                     <div class="shadowbox m-2 row card">
-                        <img class="card-img" th:src="'/images/' + ${card.backgroundImage.id}" alt="Kudos Card"/>
+                        <img class="card-img" th:src="'/images/' + ${card.imageId}" alt="Kudos Card"/>
 
                         <!--                        <div class="date card-img-overlay text-left"><p th:utext="${card.formatDate()}"></p></div>-->
 
                         <div class="card-body">
-                            <h4 class="card-title text-left"><p th:utext="${card.getType().formattedText}"></p></h4>
-                            <p class="card-text" th:utext="${card.getMessage()}"></p>
-                            <h4 class="text-right"><p th:utext="${card.getWriter()}"></p></h4>
+                            <h4 class="card-title text-left"><p th:utext="${card.title}"></p></h4>
+                            <p class="card-text" th:utext="${card.message}"></p>
+                            <h4 class="text-right"><p th:utext="${card.writer}"></p></h4>
                         </div>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
         </div>
 
         <div class="row mt-5">
-            <H1> That's all, see you next week ...</H1>
+            <h1 th:utext="${outro}"></h1>
         </div>
 
 

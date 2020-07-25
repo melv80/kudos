@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 @Component
 @ConfigurationProperties(prefix="kudos")
@@ -13,8 +14,10 @@ public class AppConfig {
   private Path basedir;
   private String cornerTitle;
   private String greeting;
-
   private String passwordHash;
+  private String localeTag = "en";
+  private String outro;
+
 
   public Path getBasedir() {
     return basedir;
@@ -46,5 +49,25 @@ public class AppConfig {
 
   public void setGreeting(String greeting) {
     this.greeting = greeting;
+  }
+
+  public Locale getLocale() {
+    return Locale.forLanguageTag(localeTag);
+  }
+
+  public String getLocaleTag() {
+    return localeTag;
+  }
+
+  public void setLocaleTag(String localeTag) {
+    this.localeTag = localeTag;
+  }
+
+  public String getOutro() {
+    return outro;
+  }
+
+  public void setOutro(String outro) {
+    this.outro = outro;
   }
 }

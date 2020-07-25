@@ -1,5 +1,8 @@
 package com.kudos.server.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -18,6 +21,10 @@ public abstract class KudosItem {
   @Column(name = "id", unique = true)
   private long id;
 
+  @CreationTimestamp
+  private Instant created = Instant.now();
+
+  @UpdateTimestamp
   private Instant edited = Instant.now();
 
   public long getId() {
@@ -32,13 +39,15 @@ public abstract class KudosItem {
     return edited;
   }
 
-  public ZonedDateTime localEdited() {
-    return edited.atZone(ZoneId.systemDefault());
+
+  public Instant getCreated() {
+    return created;
   }
 
-  public String formatDate() {
-    return localEdited().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT));
+  public void setCreated(Instant created) {
+    this.created = created;
   }
+
 
   public void setEdited(Instant edited) {
     this.edited = edited;

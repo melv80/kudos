@@ -6,7 +6,8 @@ import java.util.List;
 public enum KudosType {
   AWESOME("awesome", "Awesome!"),
   THANK_YOU("thankyou", "Thank you!"),
-  APPRECIATION("appreciation", "I appreciate");
+  APPRECIATION("appreciation", "I appreciate"),
+  HAPPY("happy", "I am Happy");
 
   private final String folder;
   private String formattedText;

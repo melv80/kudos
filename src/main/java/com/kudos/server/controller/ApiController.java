@@ -1,5 +1,6 @@
 package com.kudos.server.controller;
 
+import com.kudos.server.api.KudosCardService;
 import com.kudos.server.repositories.KudosCardRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +20,27 @@ public class ApiController {
   @Autowired
   private KudosCardRepository repositories;
 
+  @Autowired
+  private KudosCardService kudosCardService;
+
   @RequestMapping(
       value = "delete",
       method = RequestMethod.POST
   )
-  public ModelAndView delete(@RequestParam Long id) {
+  public ModelAndView delete(@RequestParam(name = "id") Long id) {
     repositories.deleteById(id);
     logger.info("kudos deleted: "+id);
     return new ModelAndView("redirect:/");
   }
+
+  @RequestMapping(
+      value = "import",
+      method = RequestMethod.POST
+  )
+  public ModelAndView importCards() {
+    kudosCardService.importCards();
+    return new ModelAndView("redirect:/admin");
+  }
+
 
 }

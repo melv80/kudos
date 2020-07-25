@@ -6,6 +6,7 @@ import com.kudos.server.model.KudosCard;
 import com.kudos.server.model.KudosItem;
 import com.kudos.server.model.KudosType;
 import com.kudos.server.model.dto.CreateCard;
+import com.kudos.server.model.dto.DisplayCard;
 import com.kudos.server.repositories.ImageRepository;
 import com.kudos.server.repositories.KudosCardRepository;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.*;
@@ -55,7 +57,6 @@ public class DemoKudosService implements KudosCardService {
     KudosCard card = new KudosCard();
     final List<Image> all = repository.findAll();
     card.backgroundImage = all.get(new Random().nextInt(all.size()));
-    card.setEdited(Instant.now());
     card.message = createCard.getMessage();
     card.type = createCard.getKudostype();
     card.writer = createCard.getWriter();
@@ -64,6 +65,11 @@ public class DemoKudosService implements KudosCardService {
     demoList.add(card);
     logger.info("card created");
 
+  }
+
+  @Override
+  public void importCards() {
+    logger.info("imported cards");
   }
 
   private KudosCard demoCard(int index) {

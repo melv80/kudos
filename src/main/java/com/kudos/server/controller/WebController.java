@@ -1,9 +1,9 @@
 package com.kudos.server.controller;
 
 import com.kudos.server.api.KudosCardService;
+import com.kudos.server.components.DisplayService;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.Image;
-import com.kudos.server.model.KudosCardList;
 import com.kudos.server.model.KudosType;
 import com.kudos.server.model.dto.CreateCard;
 import com.kudos.server.repositories.ImageRepository;
@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -32,14 +31,19 @@ public class WebController {
   KudosCardService kudosCardService;
 
   @Autowired
+  DisplayService displayService;
+
+
+  @Autowired
   ImageRepository imageRepository;
 
   @GetMapping("/")
   public String index(final Model model) {
-    model.addAttribute("kudoscards", new KudosCardList(kudosCardService.getKudosCards(1)));
+    model.addAttribute("kudoscards", displayService.getDisplayCards(1));
     model.addAttribute("contributors", kudosCardService.getWriters(1));
     model.addAttribute("title", config.getCornerTitle());
     model.addAttribute("greeting", config.getGreeting());
+    model.addAttribute("outro", config.getOutro());
     return "index";
   }
 
@@ -58,10 +62,9 @@ public class WebController {
 
   @GetMapping("/admin")
   public String admin(final Model model) {
-    model.addAttribute("kudoscards", new KudosCardList(kudosCardService.getKudosCards(1)));
+    model.addAttribute("kudoscards", kudosCardService.getKudosCards(1));
     model.addAttribute("contributors", kudosCardService.getWriters(1));
     model.addAttribute("title", config.getCornerTitle());
-    model.addAttribute("greeting", config.getGreeting());
     return "admin";
   }
 
