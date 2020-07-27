@@ -33,6 +33,8 @@ If you want to contribute to the project feel free to do a pull request or just 
 - more efficient handling of card imports / loading cards
 - LDAP login / auth
 - cards are beeing dedicated to user ids not just textual mentioned in the card
+
+### Not planned because it should not be performance or social media like
 - a like system for cards
 - reputation high score for people beeing thanked
 
