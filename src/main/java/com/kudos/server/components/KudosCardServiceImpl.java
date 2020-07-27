@@ -71,11 +71,9 @@ public class KudosCardServiceImpl implements KudosCardService {
         .filter(this::shouldInsertToDatabase)
         .peek(kudosCard -> kudosCard.setBackgroundImage(imageService.pickRandomImage(kudosCard.getType())))
         .forEach(kudosCard -> {
-          kudosCardRepository.save(kudosCard);
+          kudosCardRepository.saveAndFlush(kudosCard);
           updated.incrementAndGet();
         });
-
-    kudosCardRepository.flush();
 
     logger.info("imported cards: " + cards.size() + " new: " + updated);
   }
