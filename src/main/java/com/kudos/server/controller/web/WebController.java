@@ -70,7 +70,7 @@ public class WebController {
 
     final Optional<Image> byId = imageRepository.findById(id);
     if (!byId.isPresent()) throw new IllegalStateException("image not found");
-    Path path = config.getBasedir().resolve(byId.get().pathOnDisk).normalize();
+    Path path = config.getBaseDir().resolve(byId.get().pathOnDisk).normalize();
     if (!Files.isReadable(path)) {
       logger.error(String.format("image[ID=%s] missing: %s",id, path));
       return ResponseEntity.notFound().build();

@@ -71,16 +71,16 @@ public class ImageServiceImpl implements ImageService{
 
   public Map<String, Image> scanDirectories() {
     long start = System.currentTimeMillis();
-    logger.info("searching for new images in " + appConfig.getBasedir() + " ...");
-    if (!Files.isReadable(appConfig.getBasedir())) {
-      logger.error("can not read :" + appConfig.getBasedir() + " ...");
+    logger.info("searching for new images in " + appConfig.getBaseDir() + " ...");
+    if (!Files.isReadable(appConfig.getBaseDir())) {
+      logger.error("can not read :" + appConfig.getBaseDir() + " ...");
 
       return Collections.emptyMap();
     }
 
     Map<String, Image> images = new HashMap<>();
     try {
-      Files.walkFileTree(appConfig.getBasedir(), new SimpleFileVisitor<Path>() {
+      Files.walkFileTree(appConfig.getBaseDir(), new SimpleFileVisitor<Path>() {
 
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -103,7 +103,7 @@ public class ImageServiceImpl implements ImageService{
   }
 
   public Image createImageFromPath(Path file) {
-    final Path relativePath = appConfig.getBasedir().relativize(file);
+    final Path relativePath = appConfig.getBaseDir().relativize(file);
     Image image = new Image();
     image.pathOnDisk = relativePath.toString();
     try {

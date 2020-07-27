@@ -4,14 +4,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Locale;
 
 @Component
 @ConfigurationProperties(prefix="kudos")
 public class AppConfig {
 
-  private Path basedir;
+  private Path   baseDir;
   private String cornerTitle;
   private String greeting;
   private String passwordHash;
@@ -41,12 +40,12 @@ public class AppConfig {
     this.generateDemoData = generateDemoData;
   }
 
-  public Path getBasedir() {
-    return basedir;
+  public Path getBaseDir() {
+    return baseDir;
   }
 
-  public void setBasedir(String basedir) {
-    this.basedir = Paths.get(basedir).toAbsolutePath().normalize();
+  public void setBaseDir(Path baseDir) {
+    this.baseDir = baseDir;
   }
 
   public String getCornerTitle() {
