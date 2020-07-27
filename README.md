@@ -28,6 +28,7 @@ If you want to contribute to the project feel free to do a pull request or just 
 ### Near Future
 - duplicate check during import from confluence and run imports on a cron schedule (@Scheduled)
 - select week you want to display data for (default last week)
+- a few more admin functions
 
 ### Far Future
 - more efficient handling of card imports / loading cards
