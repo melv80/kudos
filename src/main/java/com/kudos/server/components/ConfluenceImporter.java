@@ -38,14 +38,28 @@ public class ConfluenceImporter {
     ObjectMapper input = new ObjectMapper();
     try {
       JsonNode formdata = input.readTree(source);
+      return importCardsFromJsonFile(formdata);
+    } catch (IOException e) {
+      logger.error("could not import kudos card", e);
+    }
+
+    return result;
+  }
+
+  /**
+   * @param formdata downloaded json data
+   * @return list of {@link KudosCard}
+   */
+  public List<KudosCard> importCardsFromJsonFile(JsonNode formdata) {
+    List<KudosCard> result = new ArrayList<>();
+    ObjectMapper input = new ObjectMapper();
+    try {
       ArrayNode rowData = (ArrayNode) formdata.get("rows");
       for (JsonNode rowDatum : rowData) {
         ConfluenceCard card = input.readValue(rowDatum.toString(), ConfluenceCard.class);
         result.add(convert(card));
         logger.info("read card from: "+card.userName);
       }
-
-
     } catch (IOException e) {
       logger.error("could not import kudos card", e);
     }

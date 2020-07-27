@@ -1,10 +1,15 @@
 package com.kudos.server.components;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.kudos.server.model.jpa.KudosCard;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.Base64Utils;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
 

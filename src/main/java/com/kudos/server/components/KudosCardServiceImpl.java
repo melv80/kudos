@@ -1,5 +1,6 @@
 package com.kudos.server.components;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.jpa.KudosCard;
 import com.kudos.server.model.dto.ui.CreateCard;
@@ -9,7 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Base64Utils;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -63,7 +67,37 @@ public class KudosCardServiceImpl implements KudosCardService {
     logger.info("card deleted: " + id);
   }
 
+  @Override
   public void importCards() {
+    importCardsLocally();
+    importCardsOnline();
+  }
+
+  public void importCardsOnline() {
+    if (appConfig.getConfluenceImportURL() == null)
+      logger.warn("import URL not specified.");
+
+    if (appConfig.getConfluencePassword() == null)
+      logger.warn("import password not specified.");
+
+    if (appConfig.setConfluenceUser() == null)
+      logger.warn("import user not specified.");
+
+
+    logger.info("importing data from : "+appConfig.getConfluenceImportURL());
+    JsonNode content = WebClient.builder()
+                                .baseUrl(appConfig.getConfluenceImportURL())
+                                .defaultHeader("Authorization", "Basic " + Base64Utils
+                                                                             .encodeToString((appConfig.setConfluenceUser()+ ":" + appConfig.getConfluencePassword()).getBytes(StandardCharsets.UTF_8)))
+                                .build().get().retrieve().bodyToMono(JsonNode.class).block();
+
+    if (content == null)
+      logger.info("no online data found");
+    else
+      new ConfluenceImporter().importCardsFromJsonFile(content);
+  }
+
+  public void importCardsLocally() {
     List<KudosCard> cards = new ConfluenceImporter().importCardsFromDir(appConfig.getImportDir());
 
     AtomicInteger updated = new AtomicInteger();
@@ -75,7 +109,7 @@ public class KudosCardServiceImpl implements KudosCardService {
           updated.incrementAndGet();
         });
 
-    logger.info("imported cards: " + cards.size() + " new: " + updated);
+    logger.info("imported cards from: "+appConfig.getImportDir()+" cards found: " + cards.size() + " imported: " + updated);
   }
 
   private boolean shouldInsertToDatabase(KudosCard kudosCard) {
