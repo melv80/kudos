@@ -31,10 +31,10 @@ If you want to contribute to the project feel free to do a pull request or just 
 
 ### Far Future
 - more efficient handling of card imports / loading cards
-- LDAP login / auth
-- cards are beeing dedicated to user ids not just textual mentioned in the card
+- not only expressing kudos but other emotions
 
 ### Not planned because it should not be performance or social media like
+- cards are beeing dedicated to user ids not just textual mentioned in the card
 - a like system for cards
 - reputation high score for people beeing thanked
 
