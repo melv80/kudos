@@ -52,6 +52,7 @@ public class ImageServiceImpl implements ImageService{
       logger.info("inserting new images into database: " + toInsert.size());
     }
     imageRepository.saveAll(toInsert.values());
+    imageRepository.flush();
   }
 
 

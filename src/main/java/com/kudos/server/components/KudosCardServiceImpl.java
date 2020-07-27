@@ -52,7 +52,7 @@ public class KudosCardServiceImpl implements KudosCardService {
     card.setWriter(createCard.getWriter());
     card.setBackgroundImage(imageService.pickRandomImage(card.getType()));
 
-    kudosCardRepository.save(card);
+    kudosCardRepository.saveAndFlush(card);
     logger.info("card created");
   }
 
@@ -74,6 +74,8 @@ public class KudosCardServiceImpl implements KudosCardService {
           kudosCardRepository.save(kudosCard);
           updated.incrementAndGet();
         });
+
+    kudosCardRepository.flush();
 
     logger.info("imported cards: " + cards.size() + " new: " + updated);
   }
