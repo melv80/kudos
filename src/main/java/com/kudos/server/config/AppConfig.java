@@ -19,6 +19,16 @@ public class AppConfig {
   private String outro;
   private boolean generateDemoData = false;
 
+  private Path importDir;
+
+  public Path getImportDir() {
+    return importDir;
+  }
+
+  public void setImportDir(Path importDir) {
+    this.importDir = importDir;
+  }
+
   public boolean isGenerateDemoData() {
     return generateDemoData;
   }

@@ -1,5 +1,6 @@
 package com.kudos.server.components;
 
+import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.jpa.KudosCard;
 import com.kudos.server.model.dto.ui.CreateCard;
 import com.kudos.server.repositories.KudosCardRepository;
@@ -9,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -21,6 +20,9 @@ import java.util.stream.Collectors;
 @Component
 public class KudosCardServiceImpl implements KudosCardService {
   private Logger logger = LoggerFactory.getLogger(KudosCardServiceImpl.class);
+
+  @Autowired
+  private AppConfig appConfig;
 
   @Autowired
   private ImageService imageService;
@@ -62,22 +64,18 @@ public class KudosCardServiceImpl implements KudosCardService {
   }
 
   public void importCards() {
-    try {
-      List<KudosCard> cards = new ConfluenceImporter().importCards(new File("./demoimport/DemoImport.json").toURI().toURL());
+    List<KudosCard> cards = new ConfluenceImporter().importCardsFromDir(appConfig.getImportDir());
 
-      AtomicInteger updated = new AtomicInteger();
-      cards.stream()
-          .filter(this::shouldInsertToDatabase)
-          .peek(kudosCard -> kudosCard.setBackgroundImage(imageService.pickRandomImage(kudosCard.getType())))
-          .forEach(kudosCard -> {
-              kudosCardRepository.save(kudosCard);
-              updated.incrementAndGet();
-          });
+    AtomicInteger updated = new AtomicInteger();
+    cards.stream()
+        .filter(this::shouldInsertToDatabase)
+        .peek(kudosCard -> kudosCard.setBackgroundImage(imageService.pickRandomImage(kudosCard.getType())))
+        .forEach(kudosCard -> {
+          kudosCardRepository.save(kudosCard);
+          updated.incrementAndGet();
+        });
 
-      logger.info("imported cards: " + cards.size() + " new: "+updated);
-    } catch (MalformedURLException e) {
-      throw new RuntimeException("could not import demo data", e);
-    }
+    logger.info("imported cards: " + cards.size() + " new: " + updated);
   }
 
   private boolean shouldInsertToDatabase(KudosCard kudosCard) {

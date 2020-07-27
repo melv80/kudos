@@ -3,25 +3,37 @@ package com.kudos.server.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.kudos.server.model.dto.imports.ConfluenceCard;
 import com.kudos.server.model.jpa.KudosCard;
 import com.kudos.server.model.jpa.KudosType;
-import com.kudos.server.model.dto.imports.ConfluenceCard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class ConfluenceImporter {
   private final Logger logger = LoggerFactory.getLogger(ConfluenceImporter.class);
 
-  public List<KudosCard> importCards(URL source) {
+  /**
+   * @param source one file that contains the data
+   * @return list of {@link KudosCard}
+   */
+  public List<KudosCard> importCardsFromJsonFile(URL source) {
+    logger.info("importing cards from: "+source);
     List<KudosCard> result = new ArrayList<>();
     ObjectMapper input = new ObjectMapper();
     try {
@@ -61,5 +73,32 @@ public class ConfluenceImporter {
       default:
       return KudosType.THANK_YOU;
     }
+  }
+
+  @Nullable
+  private URL toURL(Path path) {
+    try {
+      return path.toUri().toURL();
+    } catch (MalformedURLException e) {
+      logger.warn("could not open file: "+path, e);
+    }
+    return null;
+  }
+
+  public List<KudosCard> importCardsFromDir(Path importDir) {
+    try (Stream<Path> fileStream = Files.list(importDir)) {
+      return fileStream
+          .map(this::toURL)
+          .filter(Objects::nonNull)
+          .map(this::importCardsFromJsonFile)
+          .flatMap(List::stream)
+          .collect(Collectors.toList());
+
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("could not open import directory", e);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 }
