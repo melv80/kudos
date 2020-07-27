@@ -93,7 +93,7 @@ public class AppConfig {
     this.outro = outro;
   }
 
-  public String setConfluenceUser() {
+  public String getConfluenceUser() {
     return confluenceUser;
   }
 

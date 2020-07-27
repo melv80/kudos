@@ -1,9 +1,10 @@
 package com.kudos.server.components;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.MissingNode;
 import com.kudos.server.config.AppConfig;
-import com.kudos.server.model.jpa.KudosCard;
 import com.kudos.server.model.dto.ui.CreateCard;
+import com.kudos.server.model.jpa.KudosCard;
 import com.kudos.server.repositories.KudosCardRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,7 @@ public class KudosCardServiceImpl implements KudosCardService {
   @Override
   public List<KudosCard> getKudosCards(int weeksAgo) {
     // TODO: 25.07.2020 filter on db
-    Instant now = Instant.now();
+    Instant now     = Instant.now();
     Instant weekAgo = now.minus(7 * weeksAgo, ChronoUnit.DAYS);
     return kudosCardRepository.findAll().stream().filter(card -> card.getCreated().compareTo(weekAgo) > 0).collect(Collectors.toList());
   }
@@ -80,18 +81,18 @@ public class KudosCardServiceImpl implements KudosCardService {
     if (appConfig.getConfluencePassword() == null)
       logger.warn("import password not specified.");
 
-    if (appConfig.setConfluenceUser() == null)
+    if (appConfig.getConfluenceUser() == null)
       logger.warn("import user not specified.");
 
 
-    logger.info("importing data from : "+appConfig.getConfluenceImportURL());
+    logger.info("importing data from : " + appConfig.getConfluenceImportURL());
     JsonNode content = WebClient.builder()
                                 .baseUrl(appConfig.getConfluenceImportURL())
                                 .defaultHeader("Authorization", "Basic " + Base64Utils
-                                                                             .encodeToString((appConfig.setConfluenceUser()+ ":" + appConfig.getConfluencePassword()).getBytes(StandardCharsets.UTF_8)))
-                                .build().get().retrieve().bodyToMono(JsonNode.class).block();
+                                                                             .encodeToString((appConfig.getConfluenceUser() + ":" + appConfig.getConfluencePassword()).getBytes(StandardCharsets.UTF_8)))
+                                .build().get().retrieve().bodyToMono(JsonNode.class).onErrorReturn(MissingNode.getInstance()).block();
 
-    if (content == null)
+    if (content == null || content == MissingNode.getInstance())
       logger.info("no online data found");
     else
       new ConfluenceImporter().importCardsFromJsonFile(content);
@@ -102,14 +103,14 @@ public class KudosCardServiceImpl implements KudosCardService {
 
     AtomicInteger updated = new AtomicInteger();
     cards.stream()
-        .filter(this::shouldInsertToDatabase)
-        .peek(kudosCard -> kudosCard.setBackgroundImage(imageService.pickRandomImage(kudosCard.getType())))
-        .forEach(kudosCard -> {
-          kudosCardRepository.saveAndFlush(kudosCard);
-          updated.incrementAndGet();
-        });
+         .filter(this::shouldInsertToDatabase)
+         .peek(kudosCard -> kudosCard.setBackgroundImage(imageService.pickRandomImage(kudosCard.getType())))
+         .forEach(kudosCard -> {
+           kudosCardRepository.saveAndFlush(kudosCard);
+           updated.incrementAndGet();
+         });
 
-    logger.info("imported cards from: "+appConfig.getImportDir()+" cards found: " + cards.size() + " imported: " + updated);
+    logger.info("imported cards from: " + appConfig.getImportDir() + " cards found: " + cards.size() + " imported: " + updated);
   }
 
   private boolean shouldInsertToDatabase(KudosCard kudosCard) {
