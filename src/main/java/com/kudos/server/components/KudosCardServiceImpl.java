@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -74,6 +75,7 @@ public class KudosCardServiceImpl implements KudosCardService {
     importCardsOnline();
   }
 
+  @Scheduled(fixedRate = 5*60*1000)
   public void importCardsOnline() {
     if (appConfig.getConfluenceImportURL() == null)
       logger.warn("import URL not specified.");
