@@ -96,8 +96,18 @@ public class KudosCardServiceImpl implements KudosCardService {
 
     if (content == null || content == MissingNode.getInstance())
       logger.info("no online data found");
-    else
-      new ConfluenceImporter().importCardsFromJsonFile(content);
+    else {
+      List<KudosCard> cards = new ConfluenceImporter().importCardsFromJsonFile(content);
+      AtomicInteger updated = new AtomicInteger();
+      cards.stream()
+           .filter(this::shouldInsertToDatabase)
+           .peek(kudosCard -> kudosCard.setBackgroundImage(imageService.pickRandomImage(kudosCard.getType())))
+           .forEach(kudosCard -> {
+             kudosCardRepository.saveAndFlush(kudosCard);
+             updated.incrementAndGet();
+           });
+      logger.info("imported cards online, cards found: " + cards.size() + " imported: " + updated);
+    }
   }
 
   public void importCardsLocally() {
