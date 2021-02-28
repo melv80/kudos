@@ -5,6 +5,8 @@ import com.sun.istack.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class KudosCard extends KudosItem {
@@ -14,7 +16,8 @@ public class KudosCard extends KudosItem {
   @Basic(optional = true)
   private Long importerID;
 
-  private String writer;
+  @ManyToOne
+  private User writer;
 
   @Size(max = 512)
   private String message;
@@ -22,9 +25,16 @@ public class KudosCard extends KudosItem {
   @Enumerated(EnumType.STRING)
   private KudosType type;
 
+  @OneToMany
+  private List<Comment> comments = new ArrayList<>();
+
   @ManyToOne
   @Nullable
   private Image backgroundImage;
+
+  @ManyToOne
+  @NotNull
+  private PictureChannel pictureChannel;
 
   public Long getImporterID() {
     return importerID;
@@ -34,11 +44,11 @@ public class KudosCard extends KudosItem {
     this.importerID = importerID;
   }
 
-  public String getWriter() {
+  public User getWriter() {
     return writer;
   }
 
-  public void setWriter(String writer) {
+  public void setWriter(User writer) {
     this.writer = writer;
   }
 
@@ -46,7 +56,7 @@ public class KudosCard extends KudosItem {
     return message;
   }
 
-  public void setMessage(String message) {
+  public void setMessage(@NotNull String message) {
     this.message = message;
   }
 
@@ -54,8 +64,20 @@ public class KudosCard extends KudosItem {
     return type;
   }
 
-  public void setType(KudosType type) {
+  public void setType(@NotNull KudosType type) {
     this.type = type;
+  }
+
+  public void addComment(@NotNull Comment comment) {
+    this.comments.add(comment);
+  }
+
+  public void removeComment(@NotNull Comment comment) {
+    this.comments.remove(comment);
+  }
+
+  public List<Comment> getComments() {
+    return comments;
   }
 
   @Nullable
@@ -67,4 +89,11 @@ public class KudosCard extends KudosItem {
     this.backgroundImage = backgroundImage;
   }
 
+  public PictureChannel getPictureChannel() {
+    return pictureChannel;
+  }
+
+  public void setPictureChannel(@NotNull PictureChannel pictureChannel) {
+    this.pictureChannel = pictureChannel;
+  }
 }

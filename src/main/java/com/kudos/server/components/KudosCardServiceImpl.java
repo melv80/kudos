@@ -1,23 +1,23 @@
 package com.kudos.server.components;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.MissingNode;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.dto.ui.CreateCard;
 import com.kudos.server.model.jpa.KudosCard;
+import com.kudos.server.model.jpa.PictureChannel;
+import com.kudos.server.model.jpa.User;
 import com.kudos.server.repositories.KudosCardRepository;
+import com.kudos.server.repositories.PictureChannelRepository;
+import com.kudos.server.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Base64Utils;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,6 +36,12 @@ public class KudosCardServiceImpl implements KudosCardService {
   @Autowired
   private KudosCardRepository kudosCardRepository;
 
+  @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
+  private PictureChannelRepository pictureChannelRepository;
+
 
   @Override
   public List<KudosCard> getKudosCards(int weeksAgo) {
@@ -47,7 +53,7 @@ public class KudosCardServiceImpl implements KudosCardService {
 
   @Override
   public Set<String> getWriters(int weeksAgo) {
-    return getKudosCards(weeksAgo).stream().map(KudosCard::getWriter).collect(Collectors.toSet());
+    return getKudosCards(weeksAgo).stream().map(KudosCard::getWriter).map(User::getName).collect(Collectors.toSet());
   }
 
   @Override
@@ -55,13 +61,24 @@ public class KudosCardServiceImpl implements KudosCardService {
     KudosCard card = new KudosCard();
     card.setMessage(createCard.getMessage());
     card.setType(createCard.getKudostype());
-    card.setWriter(createCard.getWriter());
+    // TODO: 20.02.2021 find active user
+    card.setWriter(userRepository.findById(createCard.getWriterID()).orElseThrow(() -> new IllegalStateException("unknown user")));
     card.setBackgroundImage(imageService.pickRandomImage(card.getType()));
 
     kudosCardRepository.saveAndFlush(card);
     logger.info("card created");
   }
 
+  @Override
+  public void setPictureChannel(PictureChannel channel) {
+    
+  }
+
+  @Override
+  public PictureChannel getPictureChannel() {
+    // TODO: 27.02.2021  
+    return pictureChannelRepository.findAll().get(0);
+  }
 
   @Override
   public void deleteCard(Long id) {
@@ -72,46 +89,11 @@ public class KudosCardServiceImpl implements KudosCardService {
   @Override
   public void importCards() {
     importCardsLocally();
-    importCardsOnline();
   }
 
   @Scheduled(fixedRate = 5*60*1000)
-  public void importCardsOnline() {
-    if (appConfig.getConfluenceImportURL() == null)
-      logger.warn("import URL not specified.");
-
-    if (appConfig.getConfluencePassword() == null)
-      logger.warn("import password not specified.");
-
-    if (appConfig.getConfluenceUser() == null)
-      logger.warn("import user not specified.");
-
-
-    logger.info("importing data from : " + appConfig.getConfluenceImportURL());
-    JsonNode content = WebClient.builder()
-                                .baseUrl(appConfig.getConfluenceImportURL())
-                                .defaultHeader("Authorization", "Basic " + Base64Utils
-                                                                             .encodeToString((appConfig.getConfluenceUser() + ":" + appConfig.getConfluencePassword()).getBytes(StandardCharsets.UTF_8)))
-                                .build().get().retrieve().bodyToMono(JsonNode.class).onErrorReturn(MissingNode.getInstance()).block();
-
-    if (content == null || content == MissingNode.getInstance())
-      logger.info("no online data found");
-    else {
-      List<KudosCard> cards = new ConfluenceImporter().importCardsFromJsonFile(content);
-      AtomicInteger updated = new AtomicInteger();
-      cards.stream()
-           .filter(this::shouldInsertToDatabase)
-           .peek(kudosCard -> kudosCard.setBackgroundImage(imageService.pickRandomImage(kudosCard.getType())))
-           .forEach(kudosCard -> {
-             kudosCardRepository.saveAndFlush(kudosCard);
-             updated.incrementAndGet();
-           });
-      logger.info("imported cards online, cards found: " + cards.size() + " imported: " + updated);
-    }
-  }
-
   public void importCardsLocally() {
-    List<KudosCard> cards = new ConfluenceImporter().importCardsFromDir(appConfig.getImportDir());
+    List<KudosCard> cards = new ArrayList<>();
 
     AtomicInteger updated = new AtomicInteger();
     cards.stream()

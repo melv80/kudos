@@ -9,11 +9,20 @@ public class CreateCard {
 
   private String message;
   private String writer;
+  private Long writerID;
 
   private KudosType kudostype;
 
   public String getMessage() {
     return message;
+  }
+
+  public Long getWriterID() {
+    return writerID;
+  }
+
+  public void setWriterID(Long writerID) {
+    this.writerID = writerID;
   }
 
   public void setMessage(String message) {

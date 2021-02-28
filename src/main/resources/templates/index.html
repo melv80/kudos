@@ -24,53 +24,60 @@
 
 <body class="text-center">
 
-<div class="">
-    <main role="main" class="container">
-        <h1 th:utext="${title}"></h1>
-        <h2 th:utext="${kudoscards.size()}+' new cards since last week'"></h2>
-        <h5 th:utext="${contributors.size()}+' contributors'"></h5>
 
-        <div class="row mt-5">
-            <h3 th:utext="${greeting}"></h3>
+<div class="container justify-content-center mt-5">
+    <div class="row">
+        <div class="col-8 text-lg-left">
+            <h1 th:utext="${title}"></h1>
+            <h2 th:utext="${kudoscards.size()}+' photos'"></h2>
+            <button type="button" class="btn btn-outline-secondary" th:text="${channel}"></button>
+
+        </div>
+        <div class="col-4">
+            <button type="button" class="btn btn-outline-primary">New Post</button>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <div th:each="card, iterstat : ${kudoscards}" class="col-12">
+        <div class="row">
+            <figure class="figure card-img">
+                <img th:src="'/images/' + ${card.imageId}" class="figure-img img-fluid rounded shadowbox"
+                     alt="Image.">
+
+                <figcaption class="figure-caption text-right">
+                    <div>
+                        <p class="card-text" th:utext="${card.formattedDate} +', '+ ${card.writer}"></p>
+                    </div>
+                </figcaption>
+
+            </figure>
         </div>
 
-        <div class="row mt-5">
-            <!--                loop through cards -->
-            <div th:each="card, iterstat : ${kudoscards}" class="col-sm-4">
-                <div class="container">
-
-                    <div class="row">
-                        <!--                insert day of week -->
-                        <div th:if="${kudoscards.isFirstCardOfDay(iterstat.index)}">
-                            <h1><p th:utext="${kudoscards.getDayOfCard(iterstat.index)}"></p></h1>
-                            <h5><p th:utext="${card.formattedDate}"></p></h5>
-                        </div>
-                    </div>
-
-                    <!--                render card -->
-                    <div class="shadowbox m-2 row card">
-                        <img class="card-img" th:src="'/images/' + ${card.imageId}" alt="Kudos Card"/>
-
-                        <!--                        <div class="date card-img-overlay text-left"><p th:utext="${card.formatDate()}"></p></div>-->
-
-                        <div class="card-body">
-                            <h4 class="card-title text-left"><p th:utext="${card.title}"></p></h4>
-                            <p class="card-text" th:utext="${card.message}"></p>
-                            <h4 class="text-right"><p th:utext="${card.writer}"></p></h4>
-                        </div>
+        <br>
+        <div th:each="comment, iterstat : ${card.comments}" class="row">
+            <div class="py-2 col-12">
+                    <span class="text1">
+                        <p class="card-text text-lg-left" th:utext="${comment.message}"></p>
+                    </span>
+                <div class="d-flex justify-content-between py-1 pt-2">
+                    <div><img src="https://i.imgur.com/AgAC1Is.jpg" width="18">
+                        <p class="card-text" th:utext="${comment.writer}"></p>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="row mt-5">
-            <h1 th:utext="${outro}"></h1>
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-center pt-3 pb-2"><input type="text" name="text"
+                                                                            placeholder="+ Add a comment"
+                                                                            class="form-control addtxt"></div>
+            </div>
         </div>
 
-
-    </main>
+        <hr>
+    </div>
 </div>
-
 
 </body>
 </html>

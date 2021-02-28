@@ -46,6 +46,7 @@ public class WebController {
     model.addAttribute("kudoscards", displayService.getDisplayCards(1));
     model.addAttribute("contributors", kudosCardService.getWriters(1));
     model.addAttribute("title", config.getCornerTitle());
+    model.addAttribute("channel", kudosCardService.getPictureChannel().getName());
     model.addAttribute("greeting", config.getGreeting());
     model.addAttribute("outro", config.getOutro());
     return "index";

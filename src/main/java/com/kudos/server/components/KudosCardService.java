@@ -2,6 +2,7 @@ package com.kudos.server.components;
 
 import com.kudos.server.model.jpa.KudosCard;
 import com.kudos.server.model.dto.ui.CreateCard;
+import com.kudos.server.model.jpa.PictureChannel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public interface KudosCardService {
   List<KudosCard> getKudosCards(int weeksAgo);
 
   Set<String> getWriters(int weeksAgo);
+
+  void setPictureChannel(PictureChannel channel);
+  PictureChannel getPictureChannel();
 
   void createCard(CreateCard createCard);
 
