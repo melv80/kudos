@@ -2,9 +2,8 @@ package com.kudos.server.components;
 
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.dto.ui.CreateCard;
-import com.kudos.server.model.jpa.KudosCard;
-import com.kudos.server.model.jpa.PictureChannel;
-import com.kudos.server.model.jpa.User;
+import com.kudos.server.model.jpa.*;
+import com.kudos.server.repositories.CommentRepository;
 import com.kudos.server.repositories.KudosCardRepository;
 import com.kudos.server.repositories.PictureChannelRepository;
 import com.kudos.server.repositories.UserRepository;
@@ -15,6 +14,8 @@ import org.springframework.data.domain.Example;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ public class KudosCardServiceImpl implements KudosCardService {
   private KudosCardRepository kudosCardRepository;
 
   @Autowired
+  private CommentRepository commentRepository;
+
+  @Autowired
   private UserRepository userRepository;
 
   @Autowired
@@ -57,16 +61,28 @@ public class KudosCardServiceImpl implements KudosCardService {
   }
 
   @Override
-  public void createCard(CreateCard createCard) {
+  public void createCardRandomImage(CreateCard createCard) {
     KudosCard card = new KudosCard();
-    card.setMessage(createCard.getMessage());
     card.setType(createCard.getKudostype());
-    // TODO: 20.02.2021 find active user
     card.setWriter(userRepository.findById(createCard.getWriterID()).orElseThrow(() -> new IllegalStateException("unknown user")));
     card.setBackgroundImage(imageService.pickRandomImage(card.getType()));
-
     kudosCardRepository.saveAndFlush(card);
     logger.info("card created");
+  }
+
+  @Override
+  public void createCardWithUploadImage(String comment, Path imagePath) throws IOException {
+    KudosCard card = new KudosCard();
+    card.setType(KudosType.UPLOAD);
+    final User writer = userRepository.findAll().get(0);
+    card.setWriter(writer);
+    card.setBackgroundImage(imageService.importImage(imagePath));
+    Comment commentObject = new Comment(comment, writer);
+    commentRepository.save(commentObject);
+
+    card.addComment(commentObject);
+    kudosCardRepository.saveAndFlush(card);
+    logger.info("card created for active user");
   }
 
   @Override

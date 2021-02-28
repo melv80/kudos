@@ -52,14 +52,6 @@ public class KudosCard extends KudosItem {
     this.writer = writer;
   }
 
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(@NotNull String message) {
-    this.message = message;
-  }
-
   public KudosType getType() {
     return type;
   }

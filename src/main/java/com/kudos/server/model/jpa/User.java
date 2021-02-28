@@ -1,6 +1,7 @@
 package com.kudos.server.model.jpa;
 
 import javax.persistence.Entity;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 public class User extends KudosItem {

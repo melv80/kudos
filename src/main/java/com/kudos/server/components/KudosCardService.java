@@ -5,6 +5,8 @@ import com.kudos.server.model.dto.ui.CreateCard;
 import com.kudos.server.model.jpa.PictureChannel;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +23,14 @@ public interface KudosCardService {
   void setPictureChannel(PictureChannel channel);
   PictureChannel getPictureChannel();
 
-  void createCard(CreateCard createCard);
+  void createCardRandomImage(CreateCard createCard);
+
+  /**
+   * creates a card with the currently logged in user
+   * @param comment of the card
+   * @param image relativePath to base directory
+   */
+  void createCardWithUploadImage(String comment, Path image) throws IOException;
 
   void importCards();
 

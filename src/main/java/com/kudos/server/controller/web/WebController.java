@@ -6,11 +6,14 @@ import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.jpa.Image;
 import com.kudos.server.model.jpa.KudosType;
 import com.kudos.server.model.dto.ui.CreateCard;
+import com.kudos.server.model.jpa.User;
 import com.kudos.server.repositories.ImageRepository;
+import com.kudos.server.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Example;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,6 +40,9 @@ public class WebController {
   @Autowired
   DisplayService displayService;
 
+  @Autowired
+  UserRepository userRepository;
+
 
   @Autowired
   ImageRepository imageRepository;
@@ -50,19 +56,6 @@ public class WebController {
     model.addAttribute("greeting", config.getGreeting());
     model.addAttribute("outro", config.getOutro());
     return "index";
-  }
-
-  @GetMapping("/create")
-  public String createCard(final Model model) {
-    model.addAttribute("types", KudosType.values());
-    model.addAttribute("newCard", new CreateCard());
-    return "create";
-  }
-
-  @PostMapping("/create")
-  public String createCard(@Valid @ModelAttribute CreateCard createCard) {
-    kudosCardService.createCard(createCard);
-    return "redirect:/";
   }
 
 

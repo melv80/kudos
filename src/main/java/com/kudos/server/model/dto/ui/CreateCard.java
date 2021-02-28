@@ -7,14 +7,14 @@ import com.kudos.server.model.jpa.KudosType;
  */
 public class CreateCard {
 
-  private String message;
+  private String comment;
   private String writer;
   private Long writerID;
 
   private KudosType kudostype;
 
-  public String getMessage() {
-    return message;
+  public String getComment() {
+    return comment;
   }
 
   public Long getWriterID() {
@@ -25,8 +25,8 @@ public class CreateCard {
     this.writerID = writerID;
   }
 
-  public void setMessage(String message) {
-    this.message = message;
+  public void setComment(String comment) {
+    this.comment = comment;
   }
 
   public String getWriter() {

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-    <title>Create a Kudos card</title>
+    <title>Create a Post</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <!-- font -->
@@ -28,40 +28,25 @@
 <div class="container fill ">
     <div class="row mt-5">
         <div class="col-sm-5 mx-auto">
-            <h1 class="text-center">Create a card</h1>
-            <h5 class="text-center">Say thank you!</h5>
+            <h1 class="text-center">Create a Post</h1>
         </div>
     </div>
 
-    <form th:action="@{/create}" th:object="${newCard}" method="post">
-
-
+    <form th:action="@{/upload}" th:object="${newCard}" method="post" enctype="multipart/form-data">
         <div class="row mt-5">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="form-group">
-                    <label for="kudostype">Type of card</label>
-                    <select class="form-control" th:field="*{kudostype}" id="kudostype">
-                        <option th:each="kudostype : ${T(com.kudos.server.model.jpa.KudosType).typeList()}"
-                                th:value="${kudostype}"
-                                th:text="${kudostype.formattedText}"
-                        ></option>
-                    </select>
-                </div>
 
                 <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea type="text" class="form-control" id="message" name="message" th:field="*{message}"></textarea>
+                    <label for="comment">Message</label>
+                    <textarea type="text" class="form-control" id="comment" name="comment" th:field="*{comment}"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="writer">this card is from</label>
-                    <input type="text" class="form-control" id="writer" placeholder="T. Stark" name="username" th:field ="*{writer}">
+                    <input type="file" name="file" class="form-control-file">
                 </div>
-            </div>
-        </div>
+                <button type="submit" class="btn btn-primary">Create</button>
 
-        <div class="row mt-2">
-            <div class="col-xl-12 text-center">
-                <input type="submit" class="btn btn-outline-dark" value="Create"/>
+                <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+
             </div>
         </div>
     </form>

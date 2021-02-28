@@ -38,7 +38,6 @@ public class DisplayService {
     result.imageId = card.getBackgroundImage() == null ? -1 : card.getBackgroundImage().getId();
     result.title = card.getType().getFormattedText();
     result.writer = card.getWriter().getName();
-    result.message = card.getMessage();
     result.comments = card.getComments().stream().map(comment -> new DisplayComment(
         comment.getWriter().getName(),
         comment.getMessage(),
@@ -49,7 +48,7 @@ public class DisplayService {
 
   public CardList getDisplayCards(int weeksAgo) {
     final List<KudosCard> kudosCards = kudosCardService.getKudosCards(weeksAgo);
-    kudosCards.sort(Comparator.comparing(KudosCard::getCreated));
+    kudosCards.sort(Comparator.comparing(KudosCard::getCreated).reversed());
     return new CardList(kudosCards.stream().map(this::toDisplayCard).collect(Collectors.toList()), appConfig.getLocale());
   }
 

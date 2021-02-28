@@ -7,7 +7,9 @@ public enum KudosType {
   AWESOME("awesome", "Awesome!"),
   THANK_YOU("thankyou", "Thank you!"),
   APPRECIATION("appreciation", "I appreciate"),
-  HAPPY("happy", "I am Happy");
+  HAPPY("happy", "I am Happy"),
+  UPLOAD("upload", "upload"),
+  ;
 
   private final String folder;
   private String formattedText;

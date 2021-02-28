@@ -53,6 +53,10 @@ public class DemoDataGenerator {
     if (!appConfig.isGenerateDemoData()) return;
 
     imageServiceImpl.insertIntoDatabase();
+    User admin = new User("admin", "admin@gmail.com");
+    userRepository.save(admin);
+
+
     int cards = 15;
     List<KudosCard> demoList = new ArrayList<>();
     for (int i = 0; i < cards; i++) {
@@ -75,8 +79,6 @@ public class DemoDataGenerator {
     card.setBackgroundImage(imageServiceImpl.pickRandomImage(card.getType()));
     card.setCreated(Instant.now().minus(index % 7, ChronoUnit.DAYS));
     card.setEdited(Instant.now().minus(index % 7, ChronoUnit.DAYS));
-    card.setMessage("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."+index);
-    card.setMessage(card.getMessage().substring(0, new Random().nextInt(card.getMessage().length()-250)));
     card.setPictureChannel(channel);
 
     User user = new User("Mama ("+index+")", "melv"+index+"@gmail.com");

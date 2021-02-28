@@ -19,8 +19,6 @@ public class DisplayCard {
 
   public long imageId;
 
-  public String message;
-
   public List<DisplayComment> comments = new ArrayList<>();
 
   public ZonedDateTime getCreated() {
