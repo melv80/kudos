@@ -19,6 +19,7 @@
     <!-- Latest compiled JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 </head>
 
@@ -27,55 +28,83 @@
 
 <div class="container justify-content-center mt-5">
     <div class="row">
-        <div class="col-8 text-lg-left">
+        <div class="col-6 text-lg-left">
             <h1 th:utext="${title}"></h1>
             <h2 th:utext="${kudoscards.size()}+' photos'"></h2>
-            <button type="button" class="btn btn-outline-secondary" th:text="${channel}"></button>
-
         </div>
-        <div class="col-4">
-            <a class="btn btn-outline-dark" href="create">New Post</a>
+        <div class="col-2 text-right">
+            Channel
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-outline-secondary" th:text="${channel}"></button>
+        </div>
+        <div class="col-2">
+            <a class="btn btn-outline-primary" href="create">New Post</a>
         </div>
     </div>
     <br>
-    <hr>
+
     <div th:each="card, iterstat : ${kudoscards}" class="col-12">
+        <div class="w3-bar w3-border w3-light-grey">
+            <div class="w3-bar-item">
+                <p class="card-text" th:utext="${card.formattedDate} +' by '+ ${card.writer}"></p>
+            </div>
+            <div class="w3-bar-item w3-right">
+                <p class="card-text" th:utext="${card.comments.size()} +' comments'"></p>
+            </div>
+        </div>
         <div class="row">
-            <figure class="figure card-img">
+            <figure class="card-img">
                 <img th:src="'/images/' + ${card.imageId}" class="figure-img img-fluid rounded shadowbox"
                      alt="Image.">
-
-                <figcaption class="figure-caption text-right">
-                    <div>
-                        <p class="card-text" th:utext="${card.formattedDate} +', '+ ${card.writer}"></p>
-                    </div>
-                </figcaption>
-
             </figure>
         </div>
 
         <br>
         <div th:each="comment, iterstat : ${card.comments}" class="row">
-            <div class="py-2 col-12">
-                    <span class="text1">
-                        <p class="card-text text-lg-left" th:utext="${comment.message}"></p>
-                    </span>
-                <div class="d-flex justify-content-between py-1 pt-2">
-                    <div><img src="https://i.imgur.com/AgAC1Is.jpg" width="18">
-                        <p class="card-text" th:utext="${comment.writer}"></p>
+            <div class="py-2 col-1 figure-caption">
+                <p class="text-lg-left" th:utext="${comment.created}"></p>
+            </div>
+            <div class="py-2 col-9">
+                <div class="dialogbox">
+                    <div class="body flex-column">
+                        <span class="tip tip-right"></span>
+                        <div class="message">
+                            <p class="card-text text-lg-left" th:utext="${comment.message}"></p>
+                        </div>
                     </div>
+                </div>
+
+<!--                <p class="card-text text-lg-left" th:utext="${comment.message}"></p>-->
+            </div>
+            <div class="py-2 col-2">
+                <div>
+                    <p class="text-right figure-caption" th:utext="${comment.writer}"></p>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="d-flex justify-content-center pt-3 pb-2"><input type="text" name="text"
-                                                                            placeholder="+ Add a comment"
-                                                                            class="form-control addtxt"></div>
+        <form action="#" data-th-action="@{/comment}" method="post">
+            <div class="invisible">
+                <input type="text" th:name="cardID" th:value="${card.cardID}">
             </div>
-        </div>
+            <div class="row">
+                <div class="col-1">
+                </div>
+                <div class="col-9">
+                    <div class="justify-content-center"><input type="text"
+                                                                                th:name="comment"
+                                                                                placeholder="+ Add a comment"
+                                                                                class="form-control addtxt"
 
-        <hr>
+                    ></div>
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn-outline-secondary">Comment</button>
+                </div>
+            </div>
+        </form>
+
+        <br>
     </div>
 </div>
 

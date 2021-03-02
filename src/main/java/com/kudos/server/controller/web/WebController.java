@@ -3,11 +3,11 @@ package com.kudos.server.controller.web;
 import com.kudos.server.components.KudosCardService;
 import com.kudos.server.components.DisplayService;
 import com.kudos.server.config.AppConfig;
-import com.kudos.server.model.jpa.Image;
-import com.kudos.server.model.jpa.KudosType;
+import com.kudos.server.model.jpa.*;
 import com.kudos.server.model.dto.ui.CreateCard;
-import com.kudos.server.model.jpa.User;
+import com.kudos.server.repositories.CommentRepository;
 import com.kudos.server.repositories.ImageRepository;
+import com.kudos.server.repositories.KudosCardRepository;
 import com.kudos.server.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +18,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 @Controller
@@ -38,6 +43,9 @@ public class WebController {
   KudosCardService kudosCardService;
 
   @Autowired
+  KudosCardRepository kudosCardRepository;
+
+  @Autowired
   DisplayService displayService;
 
   @Autowired
@@ -46,6 +54,9 @@ public class WebController {
 
   @Autowired
   ImageRepository imageRepository;
+
+  @Autowired
+  CommentRepository commentRepository;
 
   @GetMapping("/")
   public String index(final Model model) {
@@ -78,4 +89,26 @@ public class WebController {
         .body(resource);
 
   }
+
+
+  @PostMapping("/comment")
+  public String uploadFile(@RequestParam("comment") String comment,
+                           @RequestParam("cardID") String cardID) {
+
+    Optional<KudosCard> cardOptional = kudosCardRepository.findById(Long.parseLong(cardID));
+    if (!cardOptional.isPresent()) {
+      throw new IllegalStateException("kudos cardOptional not found!");
+    }
+
+    KudosCard card = cardOptional.get();
+    User writer=userRepository.findAll().get(0);
+
+    Comment newComment = new Comment(comment, writer);
+    commentRepository.save(newComment);
+    card.addComment(newComment);
+    kudosCardRepository.saveAndFlush(card);
+
+    return "redirect:/";
+  }
+
 }

@@ -38,6 +38,7 @@ public class DisplayService {
     result.imageId = card.getBackgroundImage() == null ? -1 : card.getBackgroundImage().getId();
     result.title = card.getType().getFormattedText();
     result.writer = card.getWriter().getName();
+    result.cardID = card.getId();
     result.comments = card.getComments().stream().map(comment -> new DisplayComment(
         comment.getWriter().getName(),
         comment.getMessage(),
