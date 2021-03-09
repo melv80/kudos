@@ -1,7 +1,11 @@
 package com.kudos.server.model.jpa;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Image extends KudosItem {
@@ -21,6 +25,10 @@ public class Image extends KudosItem {
   public long size;
 
   public KudosType type;
+
+  @Nullable
+  @OneToOne(fetch = FetchType.EAGER)
+  public Image thumbnail;
 
   public String getUrl() {
     return "/images/"+getId();

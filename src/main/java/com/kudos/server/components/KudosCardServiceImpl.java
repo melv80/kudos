@@ -76,7 +76,7 @@ public class KudosCardServiceImpl implements KudosCardService {
     card.setType(KudosType.UPLOAD);
     final User writer = userRepository.findAll().get(0);
     card.setWriter(writer);
-    card.setBackgroundImage(imageService.importImage(imagePath));
+    card.setBackgroundImage(imageService.importImage(imagePath).image);
     Comment commentObject = new Comment(comment, writer);
     commentRepository.save(commentObject);
 

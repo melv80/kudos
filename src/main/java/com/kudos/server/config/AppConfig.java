@@ -18,8 +18,9 @@ public class AppConfig {
   private String outro;
   private boolean generateDemoData = false;
 
-  // import
+  // import of images
   private Path importDir;
+  
   private String confluenceUser;
   private String confluencePassword;
   private String importURL;

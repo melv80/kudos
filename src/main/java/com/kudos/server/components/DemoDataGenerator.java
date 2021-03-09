@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -52,7 +54,7 @@ public class DemoDataGenerator {
   void populateList() {
     if (!appConfig.isGenerateDemoData()) return;
 
-    imageServiceImpl.insertIntoDatabase();
+    imageServiceImpl.scanForNewImages();
     User admin = new User("admin", "admin@gmail.com");
     userRepository.save(admin);
 

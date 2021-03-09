@@ -74,7 +74,7 @@ public class WebController {
   public ResponseEntity<ByteArrayResource> download(@PathVariable("id") Long id) throws IOException {
 
     final Optional<Image> byId = imageRepository.findById(id);
-    if (!byId.isPresent()) throw new IllegalStateException("image not found");
+    if (!byId.isPresent()) throw new IllegalStateException("image not found with id: "+id);
     Path path = config.getBaseDir().resolve(byId.get().pathOnDisk).normalize();
     if (!Files.isReadable(path)) {
       logger.error(String.format("image[ID=%s] missing: %s",id, path));
