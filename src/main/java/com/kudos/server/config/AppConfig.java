@@ -18,20 +18,11 @@ public class AppConfig {
   private String outro;
   private boolean generateDemoData = false;
 
-  // import of images
-  private Path importDir;
   
   private String confluenceUser;
   private String confluencePassword;
   private String importURL;
 
-  public Path getImportDir() {
-    return importDir;
-  }
-
-  public void setImportDir(Path importDir) {
-    this.importDir = importDir;
-  }
 
   public boolean isGenerateDemoData() {
     return generateDemoData;
