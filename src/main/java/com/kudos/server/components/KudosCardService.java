@@ -32,7 +32,5 @@ public interface KudosCardService {
    */
   void createCardWithUploadImage(String comment, Path image) throws IOException;
 
-  void importCards();
-
   void deleteCard(Long id);
 }

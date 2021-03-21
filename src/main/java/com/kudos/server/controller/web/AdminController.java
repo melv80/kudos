@@ -40,11 +40,4 @@ public class AdminController {
     return new ModelAndView("redirect:/admin");
   }
 
-  @PostMapping("/admin/import")
-  public ModelAndView importCards() {
-    kudosCardService.importCards();
-    return new ModelAndView("redirect:/admin");
-  }
-
-
 }

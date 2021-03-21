@@ -102,26 +102,6 @@ public class KudosCardServiceImpl implements KudosCardService {
     logger.info("card deleted: " + id);
   }
 
-  @Override
-  public void importCards() {
-    importCardsLocally();
-  }
-
-  @Scheduled(fixedRate = 5*60*1000)
-  public void importCardsLocally() {
-    List<KudosCard> cards = new ArrayList<>();
-
-    AtomicInteger updated = new AtomicInteger();
-    cards.stream()
-         .filter(this::shouldInsertToDatabase)
-         .peek(kudosCard -> kudosCard.setBackgroundImage(imageService.pickRandomImage(kudosCard.getType())))
-         .forEach(kudosCard -> {
-           kudosCardRepository.saveAndFlush(kudosCard);
-           updated.incrementAndGet();
-         });
-
-    logger.info("cards found: " + cards.size() + " imported: " + updated);
-  }
 
   private boolean shouldInsertToDatabase(KudosCard kudosCard) {
     return !(kudosCardRepository.findOne(Example.of(example(kudosCard))).isPresent());
