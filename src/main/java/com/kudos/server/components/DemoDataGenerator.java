@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -55,7 +53,7 @@ public class DemoDataGenerator {
     if (!appConfig.isGenerateDemoData()) return;
 
     imageServiceImpl.scanForNewImages();
-    User admin = new User("admin", "admin@gmail.com");
+    User admin = new User("admin", "admin@gmail.com", "xxx");
     userRepository.save(admin);
 
 
@@ -83,10 +81,10 @@ public class DemoDataGenerator {
     card.setEdited(Instant.now().minus(index % 7, ChronoUnit.DAYS));
     card.setPictureChannel(channel);
 
-    User user = new User("Mama ("+index+")", "melv"+index+"@gmail.com");
+    User user = new User("Mama ("+index+")", "melv"+index+"@gmail.com", "xxx");
     userRepository.save(user);
 
-    User user2 = new User("Krissi ("+index+")", "melv"+index+"@gmail.com");
+    User user2 = new User("Krissi ("+index+")", "melv"+index+"@gmail.com", "xxx");
     userRepository.save(user2);
 
     Comment comment = new Comment("first comment", user);

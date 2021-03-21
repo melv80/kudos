@@ -28,24 +28,25 @@
 
 <div class="container justify-content-center mt-5">
     <div class="row">
-        <div class="col-6 text-lg-left">
+        <div class="col-sm-6 text-lg-left">
             <h1 th:utext="${title}"></h1>
             <h2 th:utext="${kudoscards.size()}+' photos'"></h2>
         </div>
-        <div class="col-2 text-right">
+        <div class="col-sm-2 text-right">
             Channel
         </div>
-        <div class="col-2">
+        <div class="col-sm-2">
             <button type="button" class="btn btn-outline-secondary" th:text="${channel}"></button>
         </div>
-        <div class="col-2">
+        <div class="col-sm-2">
             <a class="btn btn-outline-primary" href="create">New Post</a>
         </div>
     </div>
     <br>
 
-    <div th:each="card, iterstat : ${kudoscards}" class="col-12">
-        <div class="w3-bar w3-border w3-light-grey">
+    <div th:each="card, iterstat : ${kudoscards}">
+
+        <div class="w3-bar w3-border w3-text-blue">
             <div class="w3-bar-item">
                 <p class="card-text" th:utext="${card.formattedDate} +' by '+ ${card.writer}"></p>
             </div>
@@ -53,19 +54,20 @@
                 <p class="card-text" th:utext="${card.comments.size()} +' comments'"></p>
             </div>
         </div>
+        <br>
         <div class="row">
-            <figure class="card-img">
+            <div class="col-sm-12">
                 <img th:src="'/images/' + ${card.imageId}" class="figure-img img-fluid rounded shadowbox"
                      alt="Image.">
-            </figure>
+            </div>
         </div>
 
         <br>
         <div th:each="comment, iterstat : ${card.comments}" class="row">
-            <div class="py-2 col-1 figure-caption">
+            <div class="py-2 col-sm-1 figure-caption">
                 <p class="text-lg-left" th:utext="${comment.created}"></p>
             </div>
-            <div class="py-2 col-9">
+            <div class="py-2 col-sm-9">
                 <div class="dialogbox">
                     <div class="body flex-column">
                         <span class="tip tip-right"></span>
@@ -75,9 +77,9 @@
                     </div>
                 </div>
 
-<!--                <p class="card-text text-lg-left" th:utext="${comment.message}"></p>-->
+                <!--                <p class="card-text text-lg-left" th:utext="${comment.message}"></p>-->
             </div>
-            <div class="py-2 col-2">
+            <div class="py-2 col-sm-2">
                 <div>
                     <p class="text-right figure-caption" th:utext="${comment.writer}"></p>
                 </div>
@@ -88,17 +90,17 @@
                 <input type="text" th:name="cardID" th:value="${card.cardID}">
             </div>
             <div class="row">
-                <div class="col-1">
+                <div class="col-sm-1">
                 </div>
-                <div class="col-9">
+                <div class="col-sm-9">
                     <div class="justify-content-center"><input type="text"
-                                                                                th:name="comment"
-                                                                                placeholder="+ Add a comment"
-                                                                                class="form-control addtxt"
+                                                               th:name="comment"
+                                                               placeholder="+ Add a comment"
+                                                               class="form-control addtxt"
 
                     ></div>
                 </div>
-                <div class="col-2">
+                <div class="col-sm-2">
                     <button type="submit" class="btn-outline-secondary">Comment</button>
                 </div>
             </div>

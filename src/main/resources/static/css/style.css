@@ -101,11 +101,11 @@ body {
     height: 0px;
     position: absolute;
     background: transparent;
-    border: 10px solid #ccc;
+    border: 10px solid #118ecc;
 }
 
 .tip-up {
-    top: -25px; /* Same as body margin top + border */
+    top: -20px; /* Same as body margin top + border */
     left: 10px;
     border-right-color: transparent;
     border-left-color: transparent;
@@ -113,7 +113,7 @@ body {
 }
 
 .tip-down {
-    bottom: -25px;
+    bottom: -20px;
     left: 10px;
     border-right-color: transparent;
     border-left-color: transparent;
@@ -122,7 +122,7 @@ body {
 
 .tip-left {
     top: 10px;
-    left: -25px;
+    left: -20px;
     border-top-color: transparent;
     border-left-color: transparent;
     border-bottom-color: transparent;
@@ -130,7 +130,7 @@ body {
 
 .tip-right {
     top: 10px;
-    right: -25px;
+    right: -20px;
     border-top-color: transparent;
     border-right-color: transparent;
     border-bottom-color: transparent;
@@ -141,9 +141,9 @@ body {
     max-width: 100%;
     height: auto;
     padding: 5px;
-    background-color: #DADADA;
-    border-radius: 3px;
-    border: 5px solid #ccc;
+    background-color: #aecada;
+    border-radius: 2px;
+    border: 2px solid #118ecc;
 }
 
 .body .message {
@@ -151,5 +151,5 @@ body {
     border-radius: 3px;
     font-size: 14px;
     line-height: 1.5;
-    color: #797979;
+    color: #000000;
 }
