@@ -131,7 +131,7 @@ public class ImageServiceImpl implements ImageService {
       imageRepository.saveAll(images);
       imageRepository.flush();
     } catch (Exception e) {
-      logger.error("could not insert image "+file, e);
+      throw new IOException("could not insert image "+file, e );
     }
     return imageInfo;
   }

@@ -120,7 +120,7 @@ public class KudosCardServiceImpl implements KudosCardService {
            updated.incrementAndGet();
          });
 
-    logger.info("imported cards from: " + appConfig.getImportDir() + " cards found: " + cards.size() + " imported: " + updated);
+    logger.info("cards found: " + cards.size() + " imported: " + updated);
   }
 
   private boolean shouldInsertToDatabase(KudosCard kudosCard) {
