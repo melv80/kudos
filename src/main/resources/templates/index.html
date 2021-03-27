@@ -46,7 +46,7 @@
 
     <div th:each="card, iterstat : ${kudoscards}">
 
-        <div class="w3-bar w3-border w3-text-blue">
+        <div class="w3-bar  w3-text-blue">
             <div class="w3-bar-item">
                 <p class="card-text" th:utext="${card.formattedDate} +' by '+ ${card.writer}"></p>
             </div>
@@ -68,7 +68,7 @@
                 <p class="text-lg-left" th:utext="${comment.created}"></p>
             </div>
             <div class="py-2 col-sm-9">
-                <div class="dialogbox">
+                <div class="">
                     <div class="body flex-column">
                         <span class="tip tip-right"></span>
                         <div class="message">

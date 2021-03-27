@@ -13,6 +13,8 @@ public class User extends KudosItem {
   private String email;
   private String password;
   private boolean active;
+  // this password is used when the user is created by the system and told to the user
+  private String defaultPassword;
 
   private String roles;
 
@@ -32,6 +34,15 @@ public class User extends KudosItem {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+
+  public String getDefaultPassword() {
+    return defaultPassword;
+  }
+
+  public void setDefaultPassword(String defaultPassword) {
+    this.defaultPassword = defaultPassword;
   }
 
   public String getPassword() {

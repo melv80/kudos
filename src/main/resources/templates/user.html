@@ -30,7 +30,9 @@
             <a href="/" class="nav-link">Gallery</a>
         </div>
         <div class="col-sm-2">
-            <a href="/user/create" class="nav-link">Create User</a>
+            <form th:action="@{/user/newuser}" method="post">
+                <input class="nav-link" type="submit" value="new user"/>
+            </form>
         </div>
         <div class="col-sm"></div>
         <div class="col-sm-1">
@@ -73,7 +75,7 @@
                         <input name="name" th:value="${user.name}"/>
                     </td>
                     <td>
-                        <input name="active" type="checkbox" th:checked="${user.active}"/>
+                        <input name="active" th:value="${user.active}"/>
                     </td>
                     <td class="text-left" th:text="${user.edited}">edited</td>
                     <td>

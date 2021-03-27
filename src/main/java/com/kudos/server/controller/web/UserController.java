@@ -58,21 +58,39 @@ public class UserController {
     return admin(model);
   }
 
+  @PostMapping("/user/newuser")
+  public ModelAndView newUser() {
+    User newUser = new User("new user", "", "xxx");
+    newUser.setActive(false);
+    userRepository.save(newUser);
+    logger.info("created new inactive user");
+    return new ModelAndView("redirect:/user");
+
+  }
+
   @PostMapping("/user/update/{id}")
   public ModelAndView update(
           @PathVariable(name = "id") Long id,
           @RequestParam(name = "name") String name,
-          @RequestParam(name = "email") String email)
+          @RequestParam(name = "email") String email,
+          @RequestParam(name = "active") String isActive
+          )
   {
     userRepository.findById(id).ifPresent(user -> {
       user.setName(name);
       user.setEmail(email);
+      user.setActive(Boolean.valueOf(isActive));
+      user.setDefaultPassword(generateDefaultPassword());
       userRepository.save(user);
     });
 
 
     logger.info("updated user with id: "+id);
     return new ModelAndView("redirect:/user");
+  }
+
+  public static String generateDefaultPassword() {
+    return "xxx";
   }
 
 }
