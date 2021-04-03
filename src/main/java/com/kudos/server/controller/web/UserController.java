@@ -49,6 +49,8 @@ public class UserController {
     userDTO.active = user.isActive();
     userDTO.name=user.getName();
     userDTO.edited = Util.formatDateTimeMedium(user.getEdited(), appConfig);
+    userDTO.created = Util.formatDateTimeMedium(user.getCreated(), appConfig);
+
     userDTO.email = user.getEmail();
     return userDTO;
   }

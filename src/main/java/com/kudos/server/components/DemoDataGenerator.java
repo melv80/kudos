@@ -57,22 +57,22 @@ public class DemoDataGenerator {
     userRepository.save(admin);
 
 
+    PictureChannel channel = new PictureChannel();
+    channel.setName("Clara Fida Laila");
+    channels.save(channel);
+
+
     int cards = 15;
     List<KudosCard> demoList = new ArrayList<>();
     for (int i = 0; i < cards; i++) {
-      demoList.add(demoCard(i));
+      demoList.add(demoCard(i, channel));
     }
     kudosCardRepository.saveAll(demoList);
 
     logger.info("demo data added: "+cards);
   }
 
-  private KudosCard demoCard(int index) {
-
-    PictureChannel channel = new PictureChannel();
-    channel.setName("Clara Fida Laila");
-
-    channels.save(channel);
+  private KudosCard demoCard(int index, PictureChannel channel) {
 
     KudosCard card = new KudosCard();
     card.setType(KudosType.values()[new Random().nextInt(KudosType.values().length)]);

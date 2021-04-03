@@ -1,6 +1,7 @@
 package com.kudos.server.controller.web;
 
 import com.kudos.server.components.KudosCardService;
+import com.kudos.server.components.SessionContext;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.dto.ui.CreateCard;
 import com.kudos.server.model.jpa.KudosType;
@@ -12,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -48,7 +46,7 @@ public class UploadController {
         return "create";
     }
 
-    @PostMapping("/create")
+   /* @PostMapping("/create")
     public String createCard(@Valid @ModelAttribute CreateCard createCard) {
         createCard.setKudostype(KudosType.UPLOAD);
         User user = userRepository.findAll().get(0);
@@ -56,7 +54,7 @@ public class UploadController {
         createCard.setWriterID(user.getId());
         kudosCardService.createCardRandomImage(createCard);
         return "redirect:/";
-    }
+    }*/
 
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file,

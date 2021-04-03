@@ -2,6 +2,7 @@ package com.kudos.server.controller.web;
 
 import com.kudos.server.components.KudosCardService;
 import com.kudos.server.components.DisplayService;
+import com.kudos.server.components.SessionContext;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.model.jpa.*;
 import com.kudos.server.model.dto.ui.CreateCard;
@@ -58,11 +59,15 @@ public class WebController {
   @Autowired
   CommentRepository commentRepository;
 
+  @Autowired
+  SessionContext sessionContext;
+
   @GetMapping("/")
   public String index(final Model model) {
     model.addAttribute("kudoscards", displayService.getDisplayCards(1));
     model.addAttribute("contributors", kudosCardService.getWriters(1));
     model.addAttribute("title", config.getCornerTitle());
+    sessionContext.channel = kudosCardService.getPictureChannel();
     model.addAttribute("channel", kudosCardService.getPictureChannel().getName());
     model.addAttribute("greeting", config.getGreeting());
     model.addAttribute("outro", config.getOutro());

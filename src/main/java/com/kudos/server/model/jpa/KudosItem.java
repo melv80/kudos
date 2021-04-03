@@ -11,6 +11,9 @@ import java.time.Instant;
     strategy = InheritanceType.TABLE_PER_CLASS
 )
 public abstract class KudosItem {
+
+  private boolean active;
+
   @Id
   @GeneratedValue()
   @Column(name = "id", unique = true)
@@ -20,6 +23,17 @@ public abstract class KudosItem {
 
   @UpdateTimestamp
   private Instant edited = Instant.now();
+
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+
 
   public Long getId() {
     return id;

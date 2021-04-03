@@ -11,6 +11,8 @@ public class CreateCard {
   private String writer;
   private Long writerID;
 
+  private Long channelID;
+
   private KudosType kudostype;
 
   public String getComment() {
@@ -19,6 +21,14 @@ public class CreateCard {
 
   public Long getWriterID() {
     return writerID;
+  }
+
+  public Long getChannelID() {
+    return channelID;
+  }
+
+  public void setChannelID(Long channelID) {
+    this.channelID = channelID;
   }
 
   public void setWriterID(Long writerID) {

@@ -46,6 +46,9 @@ public class KudosCardServiceImpl implements KudosCardService {
   @Autowired
   private PictureChannelRepository pictureChannelRepository;
 
+  @Autowired
+  private SessionContext sessionContext;
+
 
   @Override
   public List<KudosCard> getKudosCards(int weeksAgo) {
@@ -79,6 +82,7 @@ public class KudosCardServiceImpl implements KudosCardService {
     card.setBackgroundImage(imageService.importImage(imagePath).image);
     Comment commentObject = new Comment(comment, writer);
     commentRepository.save(commentObject);
+    card.setPictureChannel(sessionContext.channel);
 
     card.addComment(commentObject);
     kudosCardRepository.saveAndFlush(card);

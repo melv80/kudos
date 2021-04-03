@@ -30,8 +30,8 @@
             <a href="/" class="nav-link">Gallery</a>
         </div>
         <div class="col-sm-2">
-            <form th:action="@{/user/newuser}" method="post">
-                <input class="nav-link" type="submit" value="new user"/>
+            <form th:action="@{/channel/newchannel}" method="post">
+                <input class="nav-link" type="submit" value="new channel"/>
             </form>
         </div>
         <div class="col-sm"></div>
@@ -57,7 +57,7 @@
             <thead>
             <tr>
                 <th onclick="sortTable(0)" class="text-left clickable" width="15%">Edited</th>
-                <th onclick="sortTable(1)" class="text-left clickable" width="15%">Email</th>
+                <th onclick="sortTable(1)" class="text-left clickable" width="15%"><Cards></Cards></th>
                 <th onclick="sortTable(2)" class="text-left clickable" width="15%">Name</th>
                 <th class="text-left" width="15%">Active</th>
                 <th onclick="sortTable(3)" class="text-left clickable" width="15%">Created</th>
@@ -65,19 +65,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="result" data-th-each="user : ${elements}">
-                <form th:action="@{'/user/update/'+ ${user.id}}" method="post">
-                    <td class="text-left" name="edited" th:text="${user.edited}">edited</td>
+            <tr class="result" data-th-each="channel : ${elements}">
+                <form th:action="@{'/channel/update/'+ ${channel.id}}" method="post">
+                    <td class="text-left" name="edited" th:text="${channel.edited}">edited</td>
                     <td>
-                        <input name="email" th:value="${user.email}"/>
+                        <input name="carcCount" th:value="${channel.cardCount}"/>
                     </td>
                     <td>
-                        <input name="name" th:value="${user.name}"/>
+                        <input name="name" th:value="${channel.name}"/>
                     </td>
                     <td>
-                        <input name="active" th:value="${user.active}"/>
+                        <input name="active" th:value="${channel.active}"/>
                     </td>
-                    <td class="text-left" th:text="${user.created}">created</td>
+                    <td class="text-left" th:text="${channel.created}">created</td>
                     <td>
                         <input type="submit" value="Update" class="btn btn-link danger"/>
                     </td>

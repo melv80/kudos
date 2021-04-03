@@ -4,4 +4,7 @@ public class Identifiable {
   public String name;
   public long id;
   public String edited;
+  public String created;
+
+  public boolean active;
 }
