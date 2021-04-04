@@ -40,16 +40,13 @@
         </div>
     </div>
     <h1 th:utext="${title}"></h1>
-    <h2>Administration</h2>
+    <h2>Posts Overview</h2>
 
     <div class="row">
         <p class="col-sm-1 text-left  font-weight-bold">total:</p>
         <p class="col-sm-1" th:utext="${kudoscards.size()}"></p>
         <div class="col-sm-8"></div>
         <div class="col-sm-2">
-            <form th:action="@{/admin/import}" method="post">
-                <input class="btn btn-link" type="submit" value="Import Cards"/>
-            </form>
         </div>
     </div>
 
@@ -65,7 +62,7 @@
             <tr>
                 <th onclick="sortTable(0)" class="text-left clickable" width="15%" >ID</th>
                 <th onclick="sortTable(1)" class="text-left clickable" width="15%">From</th>
-                <th onclick="sortTable(2)" class="text-left clickable" width="15%">Message</th>
+                <th onclick="sortTable(2)" class="text-left clickable" width="15%">Channel</th>
                 <th onclick="sortTable(3)" class="text-left clickable" width="15%">Created</th>
                 <th class="text-left" width="15%"></th>
             </tr>
@@ -73,8 +70,8 @@
             <tbody>
             <tr class="result" data-th-each="card : ${kudoscards}">
                 <td class="text-left" th:text="${card.id}">name</td>
-                <td class="text-left" th:text="${card.writer}">writer</td>
-                <td class="text-left" th:text="${card.message}">message</td>
+                <td class="text-left" th:text="${card.writer.getName()}">writer</td>
+                <td class="text-left" th:text="${card.pictureChannel.getName()}">message</td>
                 <td class="text-left" th:text="${card.created}">created</td>
                 <td>
                     <form th:action="@{/admin/deletecard}" method="post">

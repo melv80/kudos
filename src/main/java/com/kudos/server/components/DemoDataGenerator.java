@@ -58,6 +58,7 @@ public class DemoDataGenerator {
 
 
     PictureChannel channel = new PictureChannel();
+    channel.setActive(true);
     channel.setName("Clara Fida Laila");
     channels.save(channel);
 
