@@ -33,7 +33,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Set<String> getRoles(long userID) {
-    userRepository.findById(userID).get().getRoles();
+    final Optional<User> byId = userRepository.findById(userID);
+    if (!byId.isPresent()) return Collections.emptySet();
+    String[] split = byId.get().getRoles().split(",");
+    return new HashSet<>(Arrays.asList(split));
   }
 
   private Set<String> getRoles(User user) {
