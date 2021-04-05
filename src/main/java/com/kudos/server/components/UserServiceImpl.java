@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Set<String> getRoles(long userID) {
-    return null;
+    userRepository.findById(userID).get().getRoles();
   }
 
   private Set<String> getRoles(User user) {
