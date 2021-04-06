@@ -1,0 +1,168 @@
+
+body {
+    /*font-family: 'Red Rose', cursive;*/
+}
+
+h1 {
+    /*font-family: 'Pacifico', cursive;*/
+}
+
+h2 {
+    /*font-family: 'Pacifico', cursive;*/
+}
+
+h5 {
+    /*font-family: 'Pacifico', cursive;*/
+}
+
+.shadowbox {
+    box-shadow: 10px 10px 5px grey;
+}
+
+.date {
+    color: black;
+}
+
+body {
+    background-color: #fff;
+}
+
+
+
+.addtxt {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 13px;
+
+    background-color: #e5e8ed;
+    font-weight: 500
+}
+
+.form-control: focus {
+    color: #000
+}
+
+.second {
+
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 10px 10px 5px #aaaaaa
+}
+
+.text1 {
+    font-size: 13px;
+    font-weight: 500;
+    color: #56575b
+}
+
+.btn-lg, .btn-group-lg > .btn {
+    padding: 0.5rem 1rem;
+    font-size: 1.65rem;
+    line-height: 2.0;
+    border-radius: 0.6rem;
+}
+
+.larger {
+    font-size: 250%;
+}
+
+.text2 {
+    font-size: 13px;
+    font-weight: 500;
+    margin-left: 6px;
+    color: #56575b
+}
+
+.text3 {
+    font-size: 13px;
+    font-weight: 500;
+    margin-right: 4px;
+    color: #828386
+}
+
+.text3o {
+    color: #00a5f4
+}
+
+.text4 {
+    font-size: 13px;
+    font-weight: 500;
+    color: #828386
+}
+
+.text4i {
+    color: #00a5f4
+}
+
+.text4o {
+    color: white
+}
+
+.thumbup {
+    font-size: 13px;
+    font-weight: 500;
+    margin-right: 5px
+}
+
+.thumbupo {
+    color: #17a2b8
+}
+
+.tip {
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    background: transparent;
+    border: 10px solid #118ecc;
+}
+
+.tip-up {
+    top: -20px; /* Same as body margin top + border */
+    left: 10px;
+    border-right-color: transparent;
+    border-left-color: transparent;
+    border-top-color: transparent;
+}
+
+.tip-down {
+    bottom: -20px;
+    left: 10px;
+    border-right-color: transparent;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.tip-left {
+    top: 10px;
+    left: -20px;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.tip-right {
+    top: 10px;
+    right: -20px;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.dialogbox .body {
+    position: relative;
+    max-width: 100%;
+    height: auto;
+    padding: 5px;
+    background-color: #aecada;
+    border-radius: 2px;
+    border: 2px solid #118ecc;
+}
+
+.body .message {
+    min-height: 30px;
+    border-radius: 3px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #000000;
+}
