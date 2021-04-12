@@ -28,7 +28,7 @@
 
 <div class="container-fluid justify-content-center mt-5">
     <div class="row">
-        <div class="col-sm-2 text-lg-left">
+        <div class="col-sm-4 text-lg-left">
             <h2 th:utext="${kudoscards.size()}+' photos'"></h2>
         </div>
         <div class="col-sm-4">
@@ -41,8 +41,7 @@
     <br>
 
     <div th:each="card, iterstat : ${kudoscards}">
-
-        <div class="w3-bar  w3-text-blue">
+        <div class="w3-bar w3-text-blue row">
             <div class="w3-bar-item">
                 <p class="card-text larger" th:utext="${card.formattedDate} +' by '+ ${card.writer}"></p>
             </div>
@@ -50,15 +49,13 @@
                 <p class="card-text" th:utext="${card.comments.size()} +' comments'"></p>
             </div>
         </div>
-        <br>
         <div class="row">
             <div class="col-sm-12">
                 <img th:src="'/images/' + ${card.imageId}" class="figure-img img-fluid rounded shadowbox"
                      alt="Image.">
             </div>
         </div>
-
-        <br>
+        <hr class="new1">
     </div>
 </div>
 

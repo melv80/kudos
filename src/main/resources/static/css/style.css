@@ -153,3 +153,9 @@ body {
     line-height: 1.5;
     color: #000000;
 }
+
+/* Large rounded green border */
+hr.new1 {
+    border: 10px solid lightgray;
+    border-radius: 5px;
+}
