@@ -60,7 +60,6 @@ public class WebController {
 
   @GetMapping("/card/{cardid}")
   public String card(Device device, final Model model, @PathVariable("cardid") String cardid) {
-    logger.info(cardid);
     model.addAttribute("kudoscards", displayService.getDisplayCards(1));
     model.addAttribute("contributors", kudosCardService.getWriters(1));
     model.addAttribute("title", config.getCornerTitle());
