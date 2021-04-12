@@ -47,8 +47,10 @@
     <div th:each="card, iterstat : ${kudoscards}">
         <div class="row">
             <div class="col-sm-12">
+                <a th:href="'card/'+${card.cardID}">
                 <img th:src="'/images/' + ${card.imageId}" class="figure-img img-fluid rounded shadowbox"
                      alt="Image.">
+                </a>
             </div>
         </div>
 

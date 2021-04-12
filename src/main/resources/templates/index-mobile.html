@@ -51,8 +51,9 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
+                <a th:href="'card/'+${card.cardID}">
                 <img th:src="'/images/' + ${card.imageId}" class="figure-img img-fluid rounded shadowbox"
-                     alt="Image.">
+                     alt="Image." ></a>
             </div>
         </div>
         <hr class="new1">
