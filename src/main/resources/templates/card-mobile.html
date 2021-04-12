@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title th:utext="${title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Red+Rose&display=swap" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- own style -->
+    <link rel="stylesheet" href="css/style-mobile.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+</head>
+
+<body class="text-center" style="font-size: 36px">
+
+
+<div class="container-fluid justify-content-center mt-5">
+    <div class="w3-bar  w3-text-blue">
+        <div class="w3-bar-item">
+            <p class="card-text" th:utext="${card.formattedDate} +' by '+ ${card.writer}"></p>
+        </div>
+        <div class="w3-bar-item w3-right">
+            <p class="card-text" th:utext="${card.comments.size()} +' comments'"></p>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-12">
+            <img th:src="'/images/' + ${card.imageId}" class="figure-img img-fluid rounded shadowbox"
+                 alt="Image.">
+        </div>
+    </div>
+
+    <br>
+    <div th:each="comment, iterstat : ${card.comments}" class="row">
+        <div class="py-2 col-sm-2 figure-caption">
+            <p class="text-lg-left" th:utext="${comment.created}"></p>
+        </div>
+        <div class="py-2 col-sm-7">
+            <span class="tip tip-right"></span>
+            <div class="message text-left">
+                <p class="card-text" th:utext="${comment.message}"></p>
+            </div>
+
+            <!--                <p class="card-text text-lg-left" th:utext="${comment.message}"></p>-->
+        </div>
+        <div class="py-2 col-sm-3">
+            <div>
+                <p class="text-right figure-caption" th:utext="${comment.writer}"></p>
+            </div>
+        </div>
+    </div>
+    <form action="#" data-th-action="@{/comment}" method="post">
+        <div class="invisible">
+            <input type="text" th:name="cardID" th:value="${card.cardID}">
+        </div>
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="justify-content-center"><input type="text"
+                                                           th:name="comment"
+                                                           placeholder="+ Add a comment"
+                                                           class="form-control addtxt"
+
+                ></div>
+            </div>
+            <div class="col-sm-2">
+                <button type="submit" class="btn-lg btn-outline-secondary">Comment</button>
+            </div>
+        </div>
+    </form>
+
+    <br>
+</div>
+
+</body>
+</html>

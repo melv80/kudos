@@ -63,48 +63,6 @@
         </div>
 
         <br>
-        <div th:each="comment, iterstat : ${card.comments}" class="row">
-            <div class="py-2 col-sm-1 figure-caption">
-                <p class="text-lg-left" th:utext="${comment.created}"></p>
-            </div>
-            <div class="py-2 col-sm-9">
-                <div class="">
-                    <div class="body flex-column">
-                        <span class="tip tip-right"></span>
-                        <div class="message">
-                            <p class="card-text text-lg-left" th:utext="${comment.message}"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!--                <p class="card-text text-lg-left" th:utext="${comment.message}"></p>-->
-            </div>
-            <div class="py-2 col-sm-2">
-                <div>
-                    <p class="text-right figure-caption" th:utext="${comment.writer}"></p>
-                </div>
-            </div>
-        </div>
-        <form action="#" data-th-action="@{/comment}" method="post">
-            <div class="invisible">
-                <input type="text" th:name="cardID" th:value="${card.cardID}">
-            </div>
-            <div class="row">
-                <div class="col-sm-1">
-                </div>
-                <div class="col-sm-9">
-                    <div class="justify-content-center"><input type="text"
-                                                               th:name="comment"
-                                                               placeholder="+ Add a comment"
-                                                               class="form-control addtxt"
-
-                    ></div>
-                </div>
-                <div class="col-sm-2">
-                    <button type="submit" class="btn-outline-secondary">Comment</button>
-                </div>
-            </div>
-        </form>
 
         <br>
     </div>

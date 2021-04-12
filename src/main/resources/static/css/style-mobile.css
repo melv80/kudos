@@ -33,7 +33,7 @@ body {
     padding-top: 10px;
     padding-bottom: 10px;
     text-align: center;
-    font-size: 13px;
+    font-size: 28px;
 
     background-color: #e5e8ed;
     font-weight: 500
@@ -51,7 +51,7 @@ body {
 }
 
 .text1 {
-    font-size: 13px;
+    font-size: 28px;
     font-weight: 500;
     color: #56575b
 }
@@ -68,14 +68,14 @@ body {
 }
 
 .text2 {
-    font-size: 13px;
+    font-size: 28px;
     font-weight: 500;
     margin-left: 6px;
     color: #56575b
 }
 
 .text3 {
-    font-size: 13px;
+    font-size: 28px;
     font-weight: 500;
     margin-right: 4px;
     color: #828386
@@ -86,7 +86,7 @@ body {
 }
 
 .text4 {
-    font-size: 13px;
+    font-size: 28px;
     font-weight: 500;
     color: #828386
 }
@@ -100,7 +100,7 @@ body {
 }
 
 .thumbup {
-    font-size: 13px;
+    font-size: 28px;
     font-weight: 500;
     margin-right: 5px
 }
@@ -160,9 +160,9 @@ body {
 }
 
 .body .message {
-    min-height: 30px;
+    min-height: 90px;
     border-radius: 3px;
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 36px;
+    line-height: 2;
     color: #000000;
 }
