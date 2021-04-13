@@ -60,23 +60,15 @@ public class WebController {
 
   @GetMapping("/card/{cardid}")
   public String card(Device device, final Model model, @PathVariable("cardid") String cardid) {
-    model.addAttribute("kudoscards", displayService.getDisplayCards(1));
-    model.addAttribute("contributors", kudosCardService.getWriters(1));
-    model.addAttribute("title", config.getCornerTitle());
-    sessionContext.channel = kudosCardService.getPictureChannel();
-    model.addAttribute("channel", kudosCardService.getPictureChannel().getName());
-    model.addAttribute("greeting", config.getGreeting());
-    model.addAttribute("outro", config.getOutro());
-    model.addAttribute("card", displayService.getDisplayCards(1).iterator().next());
+    model.addAttribute("card", displayService.getCardByID(Long.parseLong(cardid)));
     return "card"+ (device.isMobile() ? "-mobile" : "");
   }
 
   @GetMapping("/")
   public String index(Device device, final Model model) {
     model.addAttribute("kudoscards", displayService.getDisplayCards(1));
-    model.addAttribute("contributors", kudosCardService.getWriters(1));
+    model.addAttribute("contributors", kudosCardService.getWriters(1, sessionContext.getChannel().getId()));
     model.addAttribute("title", config.getCornerTitle());
-    sessionContext.channel = kudosCardService.getPictureChannel();
     model.addAttribute("channel", kudosCardService.getPictureChannel().getName());
     model.addAttribute("greeting", config.getGreeting());
     model.addAttribute("outro", config.getOutro());

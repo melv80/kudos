@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -20,10 +21,14 @@ public class DisplayService {
   private final AppConfig appConfig;
   private final KudosCardService kudosCardService;
 
+  private SessionContext sessionContext;
+
   public DisplayService(@Autowired KudosCardService kudosCardService,
-                        @Autowired AppConfig appConfig) {
+                        @Autowired AppConfig appConfig,
+                        @Autowired SessionContext sessionContext) {
     this.kudosCardService = kudosCardService;
     this.appConfig = appConfig;
+    this.sessionContext = sessionContext;
   }
 
   public DisplayCard toDisplayCard(KudosCard card) {
@@ -46,8 +51,12 @@ public class DisplayService {
     return result;
   }
 
+  public DisplayCard getCardByID(long id) {
+    return toDisplayCard(kudosCardService.getKudosCard(id));
+  }
+
   public CardList getDisplayCards(int weeksAgo) {
-    final List<KudosCard> kudosCards = kudosCardService.getKudosCards(weeksAgo);
+    final List<KudosCard> kudosCards = kudosCardService.getKudosCards(weeksAgo, sessionContext.getChannel().getId());
     kudosCards.sort(Comparator.comparing(KudosCard::getCreated).reversed());
     return new CardList(kudosCards.stream().map(this::toDisplayCard).collect(Collectors.toList()), appConfig.getLocale());
   }

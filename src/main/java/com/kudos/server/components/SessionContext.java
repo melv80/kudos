@@ -1,10 +1,21 @@
 package com.kudos.server.components;
 
 import com.kudos.server.model.jpa.PictureChannel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SessionContext {
 
-    public PictureChannel channel;
+    private PictureChannel channel;
+
+    @Autowired
+    private KudosCardService kudosCardService;
+
+    public synchronized PictureChannel getChannel() {
+        if (channel == null) {
+            channel = kudosCardService.getPictureChannel();
+        }
+        return channel;
+    }
 }

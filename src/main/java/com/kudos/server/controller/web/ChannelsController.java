@@ -1,6 +1,7 @@
 package com.kudos.server.controller.web;
 
 
+import com.kudos.server.components.SessionContext;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.controller.Util;
 import com.kudos.server.model.dto.ui.ChannelDTO;
@@ -36,6 +37,17 @@ public class ChannelsController {
   @Autowired
   private AppConfig appConfig;
 
+  @Autowired
+  private SessionContext sessionContext;
+
+
+  @GetMapping("/channel/select")
+  public String selectchannel(final Model model) {
+    model.addAttribute("elements", repo.findAll().stream().map(this::toDTO).collect(Collectors.toList()));
+    model.addAttribute("activeChannelID", sessionContext.getChannel().getId());
+    model.addAttribute("title", "Channels");
+    return "selectchannel";
+  }
 
   @GetMapping("/channel")
   public String admin(final Model model) {
