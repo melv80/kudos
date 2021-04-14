@@ -12,6 +12,10 @@ public class SessionContext {
     @Autowired
     private KudosCardService kudosCardService;
 
+    public void setChannel(PictureChannel channel) {
+        this.channel = channel;
+    }
+
     public synchronized PictureChannel getChannel() {
         if (channel == null) {
             channel = kudosCardService.getPictureChannel();

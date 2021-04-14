@@ -1,9 +1,6 @@
 package com.kudos.server.model.jpa;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +13,10 @@ public class User extends KudosItem {
   private String defaultPassword;
 
   private String roles;
+
+
+  @OneToOne
+  private PictureChannel lastChannel;
 
   public User() {
   }
@@ -67,4 +68,11 @@ public class User extends KudosItem {
     return email;
   }
 
+  public PictureChannel getLastChannel() {
+    return lastChannel;
+  }
+
+  public void setLastChannel(PictureChannel lastChannel) {
+    this.lastChannel = lastChannel;
+  }
 }

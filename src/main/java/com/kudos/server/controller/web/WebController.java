@@ -66,10 +66,10 @@ public class WebController {
 
   @GetMapping("/")
   public String index(Device device, final Model model) {
-    model.addAttribute("kudoscards", displayService.getDisplayCards(1));
-    model.addAttribute("contributors", kudosCardService.getWriters(1, sessionContext.getChannel().getId()));
+    model.addAttribute("kudoscards", displayService.getDisplayCards(4));
+    model.addAttribute("contributors", kudosCardService.getWriters(4, sessionContext.getChannel().getId()));
     model.addAttribute("title", config.getCornerTitle());
-    model.addAttribute("channel", kudosCardService.getPictureChannel().getName());
+    model.addAttribute("channel", sessionContext.getChannel().getName());
     model.addAttribute("greeting", config.getGreeting());
     model.addAttribute("outro", config.getOutro());
     return "index"+ (device.isMobile() ? "-mobile" : "");

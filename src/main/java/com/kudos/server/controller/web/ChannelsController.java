@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Controller
 public class ChannelsController {
-
-
 
   private static final Logger logger = LoggerFactory.getLogger("ChannelsController");
 
@@ -39,6 +39,15 @@ public class ChannelsController {
 
   @Autowired
   private SessionContext sessionContext;
+
+  @PostMapping("/channel/select/{id}")
+  public  String setChannel(@PathVariable(name = "id") String channelID) {
+    final Optional<PictureChannel> byId = repo.findById(Long.parseLong(channelID));
+    if (!byId.isPresent())
+      throw new IllegalStateException("unknown channel with id: "+channelID);
+    sessionContext.setChannel(byId.get());
+    return "redirect:/";
+  }
 
 
   @GetMapping("/channel/select")
