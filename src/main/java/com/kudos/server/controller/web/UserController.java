@@ -1,20 +1,21 @@
 package com.kudos.server.controller.web;
 
 
-import com.kudos.server.components.UserService;
+import com.kudos.server.components.SessionContext;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.controller.Util;
-import com.kudos.server.model.dto.ui.Identifiable;
 import com.kudos.server.model.dto.ui.UserDTO;
 import com.kudos.server.model.jpa.User;
 import com.kudos.server.repositories.UserRepository;
-import org.dom4j.util.UserDataAttribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class UserController {
   private static final Logger logger = LoggerFactory.getLogger("UserController");
 
   @Autowired
-  private UserService userService;
+  private SessionContext sessionContext;
 
   @Autowired
   private UserRepository userRepository;
@@ -65,7 +66,7 @@ public class UserController {
     User newUser = new User("new user", "", "xxx");
     newUser.setActive(false);
     userRepository.save(newUser);
-    logger.info("created new inactive user");
+    logger.info(String.format("user=%s, created new inactive user", sessionContext.getAuthentication().getName()));
     return new ModelAndView("redirect:/user");
 
   }
@@ -81,7 +82,7 @@ public class UserController {
     userRepository.findById(id).ifPresent(user -> {
       user.setName(name);
       user.setEmail(email);
-      user.setActive(Boolean.valueOf(isActive));
+      user.setActive(Boolean.parseBoolean(isActive));
       user.setDefaultPassword(generateDefaultPassword());
       userRepository.save(user);
     });

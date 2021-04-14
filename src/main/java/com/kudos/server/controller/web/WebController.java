@@ -83,7 +83,7 @@ public class WebController {
     if (!byId.isPresent()) throw new IllegalStateException("image not found with id: "+id);
     Path path = config.getBaseDir().resolve(byId.get().pathOnDisk).normalize();
     if (!Files.isReadable(path)) {
-      logger.error(String.format("image[ID=%s] missing: %s",id, path));
+      logger.error(String.format("user=%s image[ID=%s] missing: %s",sessionContext.getAuthentication().getName(), id, path));
       return ResponseEntity.notFound().build();
     }
 

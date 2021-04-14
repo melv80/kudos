@@ -1,5 +1,6 @@
 package com.kudos.server.controller.web;
 
+import com.kudos.server.components.SessionContext;
 import com.kudos.server.config.AppConfig;
 import com.kudos.server.components.KudosCardService;
 import com.kudos.server.repositories.KudosCardRepository;
@@ -19,12 +20,11 @@ public class AdminController {
   @Autowired
   private AppConfig config;
 
-
-  @Autowired
-  private KudosCardRepository repositories;
-
   @Autowired
   private KudosCardService kudosCardService;
+
+  @Autowired
+  private SessionContext sessionContext;
 
   @GetMapping("/admin")
   public String admin(final Model model) {
@@ -37,6 +37,7 @@ public class AdminController {
   @PostMapping("/admin/deletecard")
   public ModelAndView delete(@RequestParam(name = "id") Long id) {
     kudosCardService.deleteCard(id);
+    logger.info(String.format("user=%s deleted card with ID: %s", sessionContext.getAuthentication().getName(), id));
     return new ModelAndView("redirect:/admin");
   }
 

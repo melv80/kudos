@@ -101,7 +101,7 @@ public class ChannelsController {
   {
     repo.findById(id).ifPresent(channel -> {
       channel.setName(name);
-      channel.setActive(Boolean.valueOf(isActive));
+      channel.setActive(Boolean.parseBoolean(isActive));
       repo.save(channel);
     });
 

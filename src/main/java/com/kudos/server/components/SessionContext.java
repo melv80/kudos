@@ -2,6 +2,8 @@ package com.kudos.server.components;
 
 import com.kudos.server.model.jpa.PictureChannel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,5 +23,9 @@ public class SessionContext {
             channel = kudosCardService.getPictureChannel();
         }
         return channel;
+    }
+
+    public Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 }
