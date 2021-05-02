@@ -17,10 +17,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Component
-public class DemoDataGenerator {
+public class SystemInitialize {
+
+  private static String demoPassword = "{MD5}f561aaf6ef0bf14d4208bb46a4ccb3ad";
 
 
-  private Logger logger = LoggerFactory.getLogger(DemoDataGenerator.class);
+  private Logger logger = LoggerFactory.getLogger(SystemInitialize.class);
 
 
   private final AppConfig appConfig;
@@ -31,12 +33,12 @@ public class DemoDataGenerator {
   private final PictureChannelRepository channels;
 
 
-  public DemoDataGenerator(@Autowired AppConfig appConfig,
-                           @Autowired ImageServiceImpl imageServiceImpl,
-                           @Autowired KudosCardRepository kudosCardRepository,
-                           @Autowired UserRepository userRepository,
-                           @Autowired CommentRepository comments,
-                           @Autowired PictureChannelRepository channels
+  public SystemInitialize(@Autowired AppConfig appConfig,
+                          @Autowired ImageServiceImpl imageServiceImpl,
+                          @Autowired KudosCardRepository kudosCardRepository,
+                          @Autowired UserRepository userRepository,
+                          @Autowired CommentRepository comments,
+                          @Autowired PictureChannelRepository channels
 
 
   ) {
@@ -50,27 +52,36 @@ public class DemoDataGenerator {
 
   @PostConstruct
   void populateList() {
-    if (!appConfig.isGenerateDemoData()) return;
 
-    imageServiceImpl.scanForNewImages();
-    User admin = new User("admin", "admin@gmail.com", "xxx");
-    userRepository.save(admin);
-
-
-    PictureChannel channel = new PictureChannel();
-    channel.setActive(true);
-    channel.setName("Clara Fida Laila");
-    channels.save(channel);
+    if (isSystemInitializing()) {
+      User admin = new User("admin", "admin", demoPassword);
+      admin.setRoles("admin");
+      userRepository.save(admin);
 
 
-    int cards = 15;
-    List<KudosCard> demoList = new ArrayList<>();
-    for (int i = 0; i < cards; i++) {
-      demoList.add(demoCard(i, channel));
+      imageServiceImpl.scanForNewImages();
+      PictureChannel channel = new PictureChannel();
+      channel.setActive(true);
+      channel.setName("Image Channel");
+      channels.save(channel);
     }
-    kudosCardRepository.saveAll(demoList);
 
-    logger.info("demo data added: "+cards);
+
+    if (appConfig.isGenerateDemoData()) {
+      PictureChannel channel = channels.findAll().get(0);
+      int cards = 15;
+      List<KudosCard> demoList = new ArrayList<>();
+      for (int i = 0; i < cards; i++) {
+        demoList.add(demoCard(i, channel));
+      }
+      kudosCardRepository.saveAll(demoList);
+
+      logger.info("demo data added: " + cards);
+    }
+  }
+
+  private boolean isSystemInitializing() {
+    return userRepository.count() == 0;
   }
 
   private KudosCard demoCard(int index, PictureChannel channel) {
@@ -82,10 +93,10 @@ public class DemoDataGenerator {
     card.setEdited(Instant.now().minus(index % 7, ChronoUnit.DAYS));
     card.setPictureChannel(channel);
 
-    User user = new User("Mama ("+index+")", "melv"+index+"@gmail.com", "xxx");
+    User user = new User("Mama ("+index+")", "melv"+index+"@gmail.com", demoPassword);
     userRepository.save(user);
 
-    User user2 = new User("Krissi ("+index+")", "melv"+index+"@gmail.com", "xxx");
+    User user2 = new User("Krissi ("+index+")", "krissi"+index+"@gmail.com", demoPassword);
     userRepository.save(user2);
 
     Comment comment = new Comment("first comment", user);

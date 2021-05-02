@@ -7,10 +7,9 @@ import java.util.List;
 @Entity
 public class User extends KudosItem {
   private String name;
+  @Column(unique=true)
   private String email;
   private String password;
-  // this password is used when the user is created by the system and told to the user
-  private String defaultPassword;
 
   private String roles;
 
@@ -28,19 +27,11 @@ public class User extends KudosItem {
     setActive(true);
   }
 
-  public String getDefaultPassword() {
-    return defaultPassword;
-  }
-
-  public void setDefaultPassword(String defaultPassword) {
-    this.defaultPassword = defaultPassword;
-  }
-
-  public String getPassword() {
+  public String getPasswordHash() {
     return password;
   }
 
-  public void setPassword(String password) {
+  public void setPasswordHash(String password) {
     this.password = password;
   }
 

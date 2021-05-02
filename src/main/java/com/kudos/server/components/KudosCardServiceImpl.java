@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -46,7 +47,6 @@ public class KudosCardServiceImpl implements KudosCardService {
 
   @Autowired
   private SessionContext sessionContext;
-
 
   @Override
   public KudosCard getKudosCard(long id) {
@@ -96,7 +96,7 @@ public class KudosCardServiceImpl implements KudosCardService {
   public void createCardWithUploadImage(String comment, Path imagePath) throws IOException {
     KudosCard card = new KudosCard();
     card.setType(KudosType.UPLOAD);
-    final User writer = userRepository.findAll().get(0);
+    final User writer = sessionContext.getCurrentUser();
     card.setWriter(writer);
     card.setBackgroundImage(imageService.importImage(imagePath).image);
     Comment commentObject = new Comment(comment, writer);

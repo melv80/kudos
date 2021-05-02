@@ -29,13 +29,15 @@
 <div class="container-fluid justify-content-center mt-5">
     <div class="row">
         <div class="col-sm-4 text-lg-left">
-            <h2 th:utext="${kudoscards.size()}+' photos'"></h2>
+            <h2 th:utext="${userName}+' - '+${kudoscards.size()}+' photos'"></h2>
         </div>
         <div class="col-sm-4">
             <a class="btn btn-outline-primary" href="/channel/select" th:text="${channel}">Channel</a>
         </div>
         <div class="col-sm-4">
-            <button type="button" class="btn-lg btn-outline-secondary" href="create">New Post</button>
+            <a class="btn btn-outline-primary" href="/create" th:text="'New Post'">New Post</a>
+            <a class="btn btn-outline-primary" href="#" th:href="@{/logout}">Log Out</a>
+
         </div>
     </div>
     <br>

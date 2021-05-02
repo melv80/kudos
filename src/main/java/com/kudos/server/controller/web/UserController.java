@@ -51,6 +51,7 @@ public class UserController {
     userDTO.name=user.getName();
     userDTO.edited = Util.formatDateTimeMedium(user.getEdited(), appConfig);
     userDTO.created = Util.formatDateTimeMedium(user.getCreated(), appConfig);
+    userDTO.passwordHash = user.getPasswordHash();
 
     userDTO.email = user.getEmail();
     return userDTO;
@@ -76,14 +77,17 @@ public class UserController {
           @PathVariable(name = "id") Long id,
           @RequestParam(name = "name") String name,
           @RequestParam(name = "email") String email,
-          @RequestParam(name = "active") String isActive
+          @RequestParam(name = "active") String isActive,
+          @RequestParam(name = "passwordHash") String passwordHash
           )
   {
     userRepository.findById(id).ifPresent(user -> {
       user.setName(name);
       user.setEmail(email);
       user.setActive(Boolean.parseBoolean(isActive));
-      user.setDefaultPassword(generateDefaultPassword());
+      if (!passwordHash.startsWith("{MD5}") && !name.equalsIgnoreCase("admin")) {
+        user.setPasswordHash(Util.MD5(passwordHash));
+      }
       userRepository.save(user);
     });
 

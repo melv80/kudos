@@ -72,6 +72,7 @@ public class WebController {
     model.addAttribute("channel", sessionContext.getChannel().getName());
     model.addAttribute("greeting", config.getGreeting());
     model.addAttribute("outro", config.getOutro());
+    model.addAttribute("userName", sessionContext.getCurrentUser().getName());
     return "index"+ (device.isMobile() ? "-mobile" : "");
   }
 
@@ -107,7 +108,7 @@ public class WebController {
     }
 
     KudosCard card = cardOptional.get();
-    User writer=userRepository.findAll().get(0);
+    User writer=sessionContext.getCurrentUser();
 
     Comment newComment = new Comment(comment, writer);
     commentRepository.save(newComment);
