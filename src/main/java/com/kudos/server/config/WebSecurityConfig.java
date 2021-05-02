@@ -1,5 +1,6 @@
 package com.kudos.server.config;
 
+import com.kudos.server.components.JPAUserDetailsService;
 import com.kudos.server.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -50,31 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   @Override
-  public InMemoryUserDetailsManager userDetailsService() {
-    Set<UserDetails> allUsers = userRepository
-        .findAll()
-        .stream()
-        .map(this::toUserDetails)
-        .collect(Collectors.toSet());
-    return new InMemoryUserDetailsManager(allUsers);
-  }
-
-  private UserDetails toUserDetails(com.kudos.server.model.jpa.User user) {
-    logger.info("adding user: "+user.getEmail());
-
-    boolean isAdmin = user.getName().equalsIgnoreCase("admin");
-
-    User.UserBuilder userBuilder = User
-        .withUsername(user.getEmail())
-        .password(isAdmin ? config.getPasswordHash() : user.getPasswordHash());
-
-    if (isAdmin) {
-      userBuilder.roles("ADMIN", "USER");
-    }
-    else {
-      userBuilder.roles("USER");
-    }
-    return userBuilder.build();
+  public UserDetailsService userDetailsService() {
+      return new JPAUserDetailsService();
   }
 
   @Override

@@ -62,7 +62,7 @@ public class UploadController {
         }
 
         // normalize the file path
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = sessionContext.getCurrentUser().getName()+"_"+System.nanoTime();
 
         // save the file on the local file system
         try {
@@ -70,7 +70,6 @@ public class UploadController {
             Path path =config.getBaseDir().resolve(relativePath).toAbsolutePath().normalize();
             Files.createDirectories(path.getParent());
             logger.error(String.format("user=%s uploading to %s", sessionContext.getAuthentication().getName(), path));
-            // TODO: 28.02.2021 handle file names exists
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             kudosCardService.createCardWithUploadImage(comment, path);
         } catch (IOException e) {
